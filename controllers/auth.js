@@ -43,7 +43,6 @@ const register = async (req,res) =>{
         console.log("error is", error)
         res.status(500).json({message:"Something went wrong, please try again"});
         return;
-
     })
 }
 const login = async(req,res)=>{
