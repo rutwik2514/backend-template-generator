@@ -6,7 +6,7 @@ function Homepage() {
     return (
         <>
             <div>Homepage</div>
-            <button>Login</button>
+            <button onClick={()=>navigate("/login")}>Login</button>
             <button onClick={() => {navigate("/register")}}>Register</button>
         </>
     )

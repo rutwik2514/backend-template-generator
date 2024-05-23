@@ -17,7 +17,7 @@ function Register() {
 
     /********************Functions ************************************/
     const handleClick = async() => {
-        if (data.email == "" || data.userName == "" || data.password == "" || data.confirmPassword == "") {
+        if (data.email === "" || data.userName === "" || data.password === "" || data.confirmPassword === "") {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
         }
         else if(!Validate("email", data.email)){
