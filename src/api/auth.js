@@ -9,6 +9,7 @@ const handleLogin = async (data) => {
       })
       return { token: response.data.data, error: null };
     } catch (error) {
+      console.log("error is", error);
       return {error: error.response.data.message}
     }
   };
@@ -31,8 +32,11 @@ const handleLogin = async (data) => {
 
   const fetchUser = async() => {
     try {
-      const user_info = await axiosInstance.get("/auth/verify");
-      return {user: user_info.data, error:null};
+    console.log("axios instance is", axiosInstance);
+
+      const user_info = await axiosInstance.get("/auth/fetchUser");
+      console.log("response from fetch user is", user_info);
+      return {user: user_info.data.message, error:null};
     } catch (error) {
       console.log(error);
       return {user: "", error: error.message}
