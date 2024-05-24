@@ -1,7 +1,7 @@
 import React from "react"
 import Error from '../Utils/Error'
 import Validate from '../Validators/Validate'
-import axios from "axios"
+import { handleLogin } from "../api/auth"
 function Login() {
     /*************************  State Declarations  *************************/
     const [data, setData] = React.useState({
@@ -25,12 +25,16 @@ function Login() {
             return;
         }
         //sending request
-        await axios.post("http://localhost:8000/api/v1/auth/login",{email:data.email,password:data.password}).then((res)=>{
-            localStorage.setItem("user", res.data.data);
+        const  {token,error}  = await handleLogin(data);
+        if(!error){
+            localStorage.setItem("token", token)
             window.location.replace("/dashboard")
-        }).catch((err)=>{
-            setError(prev =>({...prev,show:true,title:"Error", body : err.response.data.message}))
-        })
+            return;
+        }
+        else{
+            setError(prev => ({...prev,show:true,title:"Error", body:error}))
+            return;
+        }
     }
 
     const handleClose = () => {

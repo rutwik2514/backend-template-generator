@@ -7,7 +7,7 @@ function Dashboard() {
     <>
     <div>Dashboard</div>
     <button onClick={()=>{
-        localStorage.removeItem("user");
+        localStorage.removeItem("token");
         navigate("/login")
     }}>Logout</button>
     </>

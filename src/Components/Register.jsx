@@ -2,6 +2,7 @@ import React from 'react'
 import Error from '../Utils/Error'
 import Validate from '../Validators/Validate'
 import { useNavigate } from 'react-router-dom'
+import { handleRegister } from '../api/auth'
 import axios from 'axios'
 function Register() {
     /***************State Declarations  *******************************/
@@ -40,14 +41,16 @@ function Register() {
             setError(prev => ({...prev,show:true,title:"Error", body:"Password and Confirm Password does not match"}))
             return;
         }
-
-        //sending requests
-        await axios.post("http://localhost:8000/api/v1/auth/register",{email:data.email, userName:data.userName,password:data.password, confirmPassword:data.confirmPassword})
-        .then((res)=>{
-            navigate("/login");
-        }).catch((err)=>{
-            setError(prev => ({...prev,show:true,title:"Error", body :err.response.data.message}))
-        })
+        
+        const {error} =await handleRegister(data);
+        if(!error){
+            navigate("/login")
+            return;
+        }
+        else{
+            setError(prev => ({...prev,show:true,title:"Error", body:error}))
+            return;
+        }
     }
   
     return (
