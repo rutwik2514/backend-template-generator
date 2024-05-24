@@ -3,7 +3,6 @@ import Error from '../Utils/Error'
 import Validate from '../Validators/Validate'
 import { useNavigate } from 'react-router-dom'
 import { handleRegister } from '../api/auth'
-import axios from 'axios'
 function Register() {
     /***************State Declarations  *******************************/
     const [data, setData] = React.useState({
@@ -25,19 +24,19 @@ function Register() {
     }
     
     const handleClick = async() => {
-        if (data.email === "" || data.userName === "" || data.password === "" || data.confirmPassword === "") {
+        if (data?.email === "" || data?.userName === "" || data?.password === "" || data?.confirmPassword === "") {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
             return;
         }
-        else if(!Validate("email", data.email)){
+        else if(!Validate("email", data?.email)){
             setError(prev =>({...prev,show:true,title:"Error",body:"Email is not valid"}))
             return;
         }
-        else if(!Validate("password", data.password)){
+        else if(!Validate("password", data?.password)){
             setError(prev =>({...prev,show:true,title:"Error", body:"Password is not valid"}))
             return;
         }
-        else if(data.password !== data.confirmPassword){
+        else if(data?.password !== data?.confirmPassword){
             setError(prev => ({...prev,show:true,title:"Error", body:"Password and Confirm Password does not match"}))
             return;
         }

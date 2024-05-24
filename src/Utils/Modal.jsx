@@ -23,8 +23,8 @@ const style = {
 function ModalFunc(props) {
     return (
         <Modal
-            open={props.show}
-            onClose={props.handleClose}
+            open={props?.show}
+            onClose={props?.handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
 
@@ -34,7 +34,7 @@ function ModalFunc(props) {
                     <ErrorIcon color='red' />
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {props.body}
+                    {props?.body}
                 </Typography>
             </Box>
         </Modal>

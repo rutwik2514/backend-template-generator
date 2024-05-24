@@ -16,11 +16,11 @@ function Login() {
 
     /*************************  Functions  *************************/
     const handleClick = async () => {
-        if (data.email === "" || data.password === "") {
+        if (data?.email === "" || data?.password === "") {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
             return;
         }
-        else if (!Validate("email", data.email)) {
+        else if (!Validate("email", data?.email)) {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Email is not valid" }))
             return;
         }
@@ -44,8 +44,8 @@ function Login() {
     return (
         <>
             <div>Login</div>
-            <input type='email' placeholder='Email' onChange={(e) => { setData(prev => ({ ...prev, email: e.target.value })) }} />
-            <input type='password' placeholder='Password' onChange={(e) => { setData(prev => ({ ...prev, password: e.target.value })) }} />
+            <input type='email' placeholder='Email' onChange={(e) => { setData(prev => ({ ...prev, email: e?.target?.value })) }} />
+            <input type='password' placeholder='Password' onChange={(e) => { setData(prev => ({ ...prev, password: e?.target?.value })) }} />
             <button onClick={handleClick}>Login</button>
             {error.show && <>
                 <Error show={true} title={error.title} body={error.body} handleClose={handleClose} />

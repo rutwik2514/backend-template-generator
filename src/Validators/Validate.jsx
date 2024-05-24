@@ -4,8 +4,8 @@ let regex = {
 
 }
 function Validate(type,value) {
-  if(type==="email") return regex.email.test(value);
-  if(type==="password")return regex.password.test(value)
+  if(type==="email") return regex?.email?.test(value);
+  if(type==="password")return regex?.password?.test(value)
 }
 
 export default Validate

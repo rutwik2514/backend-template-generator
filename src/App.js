@@ -30,7 +30,7 @@ const AppRoutes = () => {
   const verifyToken = async () => {
     if (localStorage.getItem("token")) {
       const res = await fetchUser();
-      if (res.error === null)
+      if (res?.error === null)
         setUserData({ user: res.user });
       else
         toast.error("something went wrong, please try again")
