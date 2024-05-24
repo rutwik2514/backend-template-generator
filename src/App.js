@@ -11,6 +11,7 @@ import { AuthContext } from './context/Auth_Context';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchUser } from './api/auth';
+import Navbar from './Components/Navbar/Navbar';
 
 function App() {
   return (
@@ -57,6 +58,7 @@ const AppRoutes = () => {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
+          <Route exact path="/navbar" element={<Navbar/>}/>
         </Routes>
         <ToastContainer
           position="top-center"
