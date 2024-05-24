@@ -1,7 +1,7 @@
 import React from "react"
 import Error from '../Utils/Error'
 import Validate from '../Validators/Validate'
-
+import axios from "axios"
 function Login() {
     /*************************  State Declarations  *************************/
     const [data, setData] = React.useState({
@@ -18,10 +18,19 @@ function Login() {
     const handleClick = async () => {
         if (data.email === "" || data.password === "") {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
+            return;
         }
         else if (!Validate("email", data.email)) {
             setError(prev => ({ ...prev, show: true, title: "Error", body: "Email is not valid" }))
+            return;
         }
+        //sending request
+        await axios.post("http://localhost:8000/api/v1/auth/login",{email:data.email,password:data.password}).then((res)=>{
+            localStorage.setItem("user", res.data.data);
+            window.location.replace("/dashboard")
+        }).catch((err)=>{
+            setError(prev =>({...prev,show:true,title:"Error", body : err.response.data.message}))
+        })
     }
 
     const handleClose = () => {

@@ -1,6 +1,8 @@
 import React from 'react'
 import Error from '../Utils/Error'
 import Validate from '../Validators/Validate'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 function Register() {
     /***************State Declarations  *******************************/
     const [data, setData] = React.useState({
@@ -14,26 +16,40 @@ function Register() {
         title: "",
         body: "",
     })
+    const navigate = useNavigate();
 
     /********************Functions ************************************/
-    const handleClick = async() => {
-        if (data.email === "" || data.userName === "" || data.password === "" || data.confirmPassword === "") {
-            setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
-        }
-        else if(!Validate("email", data.email)){
-            setError(prev =>({...prev,show:true,title:"Error",body:"Email is not valid"}))
-        }
-        else if(!Validate("password", data.password)){
-            setError(prev =>({...prev,show:true,title:"Error", body:"Password is not valid"}))
-        }
-        else if(data.password !== data.confirmPassword){
-            setError(prev => ({...prev,show:true,title:"Error", body:"Password and Confirm Password does not match"}))
-        }
-        //data validated
-    }
     const handleClose = () => {
         setError(prev => ({ ...prev, show: false, title: "", body: "" }));
     }
+    
+    const handleClick = async() => {
+        if (data.email === "" || data.userName === "" || data.password === "" || data.confirmPassword === "") {
+            setError(prev => ({ ...prev, show: true, title: "Error", body: "Fields cannot be empty" }))
+            return;
+        }
+        else if(!Validate("email", data.email)){
+            setError(prev =>({...prev,show:true,title:"Error",body:"Email is not valid"}))
+            return;
+        }
+        else if(!Validate("password", data.password)){
+            setError(prev =>({...prev,show:true,title:"Error", body:"Password is not valid"}))
+            return;
+        }
+        else if(data.password !== data.confirmPassword){
+            setError(prev => ({...prev,show:true,title:"Error", body:"Password and Confirm Password does not match"}))
+            return;
+        }
+
+        //sending requests
+        await axios.post("http://localhost:8000/api/v1/auth/register",{email:data.email, userName:data.userName,password:data.password, confirmPassword:data.confirmPassword})
+        .then((res)=>{
+            navigate("/login");
+        }).catch((err)=>{
+            setError(prev => ({...prev,show:true,title:"Error", body :err.response.data.message}))
+        })
+    }
+  
     return (
         <>
             <div>Register</div>
