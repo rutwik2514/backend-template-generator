@@ -29,6 +29,7 @@ const register = async (req, res) => {
     const profile = await Profile.find({ email: email });
     if (profile.length) {
         res.status(400).json({ message: "Already Registered, Please Log in" });
+        return;
     }
 
     //adding pepper to password
