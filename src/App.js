@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchUser } from './api/auth';
 import Navbar from './Components/Navbar/Navbar';
+import Permission from './Components/Permission';
+import NewProject from './Components/NewProject';
 
 function App() {
   return (
@@ -58,6 +60,10 @@ const AppRoutes = () => {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
+          <Route index exact path="/permission" element={<Permission   />} />
+          <Route index exact path="/newproject" element={<NewProject   />} />
+
+
           <Route exact path="/navbar" element={<Navbar/>}/>
         </Routes>
         <ToastContainer

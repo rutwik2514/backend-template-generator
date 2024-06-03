@@ -51,7 +51,7 @@
 }
 
 .list-items a:hover {
-    background-color: magenta;
+    background-color: magenta !important;
 }
 
 .sidebar-menu-items {
