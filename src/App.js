@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchUser } from './api/auth';
 import Navbar from './Components/Navbar/Navbar';
+import RolePermissionForm from './Components/RolePermission/RolePermissionForm';
 
 function App() {
   return (
@@ -59,6 +60,7 @@ const AppRoutes = () => {
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
           <Route exact path="/navbar" element={<Navbar/>}/>
+          <Route exact path='/permissions' element={<RolePermissionForm />}/>
         </Routes>
         <ToastContainer
           position="top-center"
