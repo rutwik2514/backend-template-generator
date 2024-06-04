@@ -24,7 +24,7 @@ const newProject = async (req, res) => {
     user.projects.push(newProject._id);
     await user.save();
 
-    return res.status(200).json({ message: "OK" });
+    return res.status(200).json({ message: "OK", id:newProject._id});
 }
 
 const deleteProject = async(req,res) =>{
