@@ -39,7 +39,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.genSalt(10).then(salt => bcrypt.hash(newPassword, salt))
 
     //storing in database
-    Profile.create({ email: email, password: hashedPassword, userName: userName }).then(() => {
+    Profile.create({ email: email, password: hashedPassword, userName: userName, projects:[]}).then(() => {
         return res.status(200).json({ message: "Registered successfully" })
     }).catch((error) => {
         console.log("error is", error)
