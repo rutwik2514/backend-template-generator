@@ -11,8 +11,9 @@ import { AuthContext } from './context/Auth_Context';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchUser } from './api/auth';
+import PermissionsPage from './Components/Roles/PermissionsPage';
 import Navbar from './Components/Navbar/Navbar';
-import RolePermissionForm from './Components/RolePermission/RolePermissionForm';
+import RolesPage from './Components/Roles/RolesPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
 const AppRoutes = () => {
   const location = useLocation();
   const [userData, setUserData] = useState({ user: "" })
+  const [permissions, setPermissions] = useState([]);
 
   //verifying token in local storage
   const verifyToken = async () => {
@@ -53,14 +55,15 @@ const AppRoutes = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ userData, setUserData }} >
+      <AuthContext.Provider value={{ userData, setUserData, permissions, setPermissions }} >
         <Routes>
           <Route exact path="/" element={<Homepage />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
           <Route exact path="/navbar" element={<Navbar/>}/>
-          <Route exact path='/permissions' element={<RolePermissionForm />}/>
+          <Route exact path='/permissions' element={<PermissionsPage />}/>
+          <Route exact path='/roles' element={<RolesPage />}/>
         </Routes>
         <ToastContainer
           position="top-center"
