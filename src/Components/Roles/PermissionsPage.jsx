@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/Auth_Context';
+import {addPermissions, deletePermission} from '../../api/permissions';
 
 const PermissionsPage = () => {
   const { permissions, setPermissions } = useContext(AuthContext);
@@ -27,15 +28,27 @@ const PermissionsPage = () => {
     }
   }
 
+
   const handleSelectPermission = (permission) => {
     setSelectedPermission(permission);
     setEditedPermission(permission); 
   }
+
   const handleDeletePermission = (permission) => {
     setPermissions((prev)=>{
       const updatedPermissions = prev.filter((key) => key!==permission);
       return updatedPermissions;
     })
+  }
+
+  const projectId = ''; // change this Project id to actual one by projectInfo
+  const handleSubmitPermissions = async () => {
+    const {data, error} = await addPermissions(projectId, permissions);
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Permissions added Successfully: ", data);
+    }
   };
 
   console.log(permissions);
@@ -80,6 +93,7 @@ const PermissionsPage = () => {
           ))}
         </ul>
       </div>
+      <button onClick={handleSubmitPermissions}>Submit Permissions</button>
     </div>
   );
 };

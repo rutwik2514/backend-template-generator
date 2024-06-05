@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import permissions from './permissiona';
+import { addNewRole, deleteRole, updateRole } from '../../api/role';
+
+// in roles state every role is stored along with every permissions assocaited with it and newRoleName can be used for updating but for that we either post all of the role state at once just like in permission or what ?
 
 const RolesPage = () => {
   const [roles, setRoles] = useState([]);
