@@ -55,6 +55,38 @@ const deleteProject = async(req,res) =>{
 }
 
 
+//get all projects
+const getAllProjects = async(req,res) =>{
+    const userId = req.access_token.id;
+    const user = await User.findById(userId).populate('projects');
+    const projects = user.projects;
+    if(projects){
+        return res.status(200).json({message:"Ok", projects:projects});
+    }
+    else{
+        return res.status(500).json({message:"Something went wrong"});
+
+    }
+}
+
+const getProjectInfo = async(req,res) =>{
+    // const {projectId} = req.body;
+    const projectId = req.params.projectId;
+    if(projectId==null || projectId==undefined || !projectId){
+        return res.status(500).json({message:"Need project Id"});
+
+    }
+    console.log("projectId is", projectId);
+    const project = await Project.findById(projectId).populate('roles');
+    if(project){
+        return res.status(200).json({message:"Ok", project:project});
+    }
+    else{
+        return res.status(500).json({message:"Something went wrong"});
+
+    }
+}
+
 //add permissions to project
 const addPermission = async (req, res) => {
     //validators
@@ -103,5 +135,7 @@ module.exports = {
     newProject,
     addPermission,
     deletePermission,
-    deleteProject
+    deleteProject,
+    getAllProjects,
+    getProjectInfo
 }

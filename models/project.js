@@ -7,13 +7,14 @@ const schema = new mongoose.Schema({
     },
     userId:{
         type:mongoose.Types.ObjectId,
+        ref:"Profile"
     },
     permissions:[{
         type:String,
     }],
     roles:[{
         type:mongoose.Types.ObjectId,
-        // ref:""
+        ref:"Role"
     }]
 
 

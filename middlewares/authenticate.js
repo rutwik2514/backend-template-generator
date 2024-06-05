@@ -32,18 +32,19 @@ const jwt = require('jsonwebtoken');
 
   if (!token.startsWith('Bearer ')) {
     console.log("returning false");
-    return res.send({ message: "Token not found" });
+    return res.status(500).send({ message: "Token not found" });
     return false;
   }
   const access_token = token.split('Bearer ')[1];
   const decoded = await decodeToken(access_token);
   if(!decoded){
-    return res.send({message:'Session Expired! Please login again'})
+    console.log("sending session expired");
+    return res.status(500).send({message:'Session Expired! Please login again'})
   }
   req.access_token = await decodeToken(access_token);
   console.log("access token is", req.access_token);
   if (!req.access_token) {
-    return res.send({message:'Session Expired! Please login again'});
+    return res.status(500).send({message:'Session Expired! Please login again'});
   }
   // return true;
 

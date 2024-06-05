@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {register,login, fetchUser} = require("../controllers/auth");
 const {checkAuthorizationHeaders} = require("../middlewares/authenticate");
-const { newProject, addPermission, deletePermission, deleteProject } = require("../controllers/project");
+const { newProject, addPermission, deletePermission, deleteProject, getAllProjects, getProjectInfo } = require("../controllers/project");
 const {newRole, deleteRole, updateRole } = require("../controllers/role");
 
 //auth routes
@@ -16,6 +16,8 @@ router.post("/project/new",checkAuthorizationHeaders, newProject);
 router.post("/project/addPermission",checkAuthorizationHeaders,addPermission)
 router.delete("/project/deletePermission",checkAuthorizationHeaders,deletePermission)
 router.delete("/project/deleteProject",checkAuthorizationHeaders,deleteProject);
+router.get("/project/getProjects", checkAuthorizationHeaders,getAllProjects)
+router.get("/project/getProjectInfo/:projectId", checkAuthorizationHeaders,getProjectInfo);
 
 //role routes
 router.post("/role/new", checkAuthorizationHeaders, newRole)
