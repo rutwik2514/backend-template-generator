@@ -100,7 +100,7 @@ const addPermission = async (req, res) => {
         return res.status(401).json({ message: "Project not found" })
     }
     //adding permission
-    project.permissions.push(permission);
+    project.permissions.push(...permission);
     await project.save();
     return res.status(200).json({ message: "OK" })
 }
