@@ -14,6 +14,9 @@ import { fetchUser } from './api/auth';
 import PermissionsPage from './Components/Roles/PermissionsPage';
 import Navbar from './Components/Navbar/Navbar';
 import RolesPage from './Components/Roles/RolesPage';
+import Permission from './Components/Permission';
+// import NewProject from './Components/NewProject';
+import Project from './Components/Project';
 
 function App() {
   return (
@@ -37,7 +40,7 @@ const AppRoutes = () => {
       if (res?.error === null)
         setUserData({ user: res.user });
       else
-        toast.error("something went wrong, please try again")
+        toast.error(res.error)
     } else {
       toast.error("You are unauthorized to access this resource");
       setTimeout(() => {
@@ -61,6 +64,9 @@ const AppRoutes = () => {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
+          <Route index exact path="/permission" element={<Permission   />} />
+          <Route index exact path="/project/:projectId" element={<Project   />} />
+
           <Route exact path="/navbar" element={<Navbar/>}/>
           <Route exact path='/permissions' element={<PermissionsPage />}/>
           <Route exact path='/roles' element={<RolesPage />}/>

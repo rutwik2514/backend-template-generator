@@ -39,9 +39,9 @@ const handleLogin = async (data) => {
       return {user: user_info?.data?.message, error:null};
     } catch (error) {
       console.log(error);
-      return {user: "", error: error?.message}
+      return {user: "", error: error?.response?.data?.message}
     }
   
   }
 
-  export { handleLogin, fetchUser, handleRegister };
+  export { handleLogin, fetchUser, handleRegister};

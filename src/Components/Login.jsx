@@ -26,6 +26,7 @@ function Login() {
         }
         //sending request
         const  {token,error}  = await handleLogin(data);
+        console.log("token and error is", token,error);
         if(!error){
             localStorage.setItem("token", token)
             window.location.replace("/dashboard")

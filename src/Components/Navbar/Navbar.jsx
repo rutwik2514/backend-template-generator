@@ -48,9 +48,15 @@ function Navbar() {
             </Link>
           </li>
           <li className="list-items">
-            <Link to='#'>
+            <Link to='/permission'>
               <MdOutlineDashboard />
-              <span>Dashboard</span>
+              <span>Permissions</span>
+            </Link>
+          </li>
+          <li className="list-items">
+            <Link to='/newproject'>
+              <MdOutlineDashboard />
+              <span>New Project</span>
             </Link>
           </li>
           <li className="list-items">
