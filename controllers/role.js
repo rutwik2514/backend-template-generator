@@ -21,7 +21,6 @@ const newRole = async (req, res) => {
     //creating role
     const newRole = await Role.create({ name: name, projectId: projectId, permissions: permissions })
     const roleId = newRole._id;
-
     //updating project
     project.roles.push(roleId);
     await project.save();
@@ -32,6 +31,7 @@ const newRole = async (req, res) => {
 const deleteRole = async (req, res) => {
     //validators
     const {projectId, role } = req.body;
+    console.log("project id for deleete is", projectId,role);
     if (!projectId || projectId == null || projectId == undefined) {
         return res.status(401).json({ message: "need Project ID" })
     }
@@ -74,7 +74,7 @@ const updateRole = async(req,res) =>{
     }
 
     //updating name and permissions
-    if(!(permissions===null) && !(permissions===undefined) && (permissions) && !(permissions.length == 0)){
+    if(!(permissions===null) && !(permissions===undefined) && (permissions)){
         tempRole.permissions=permissions;
     }
     if((name) && !(name==null) && !(name==undefined) && (permissions)){
@@ -84,6 +84,7 @@ const updateRole = async(req,res) =>{
     return res.status(200).json({ message: "OK" })
 
 }
+
 
 module.exports = {
     newRole,

@@ -69,9 +69,11 @@ const getAllProjects = async(req,res) =>{
     }
 }
 
+
 const getProjectInfo = async(req,res) =>{
     // const {projectId} = req.body;
     const projectId = req.params.projectId;
+    console.log("came in project info");
     if(projectId==null || projectId==undefined || !projectId){
         return res.status(500).json({message:"Need project Id"});
 
@@ -90,7 +92,7 @@ const getProjectInfo = async(req,res) =>{
 //add permissions to project
 const addPermission = async (req, res) => {
     //validators
-    const { projectId,permission } = req.body;
+    const { projectId,permissions } = req.body;
     if (projectId == null || projectId == undefined || !projectId) {
         return res.status(401).json({ message: "need project id" })
     }
@@ -100,7 +102,7 @@ const addPermission = async (req, res) => {
         return res.status(401).json({ message: "Project not found" })
     }
     //adding permission
-    project.permissions.push(...permission);
+    project.permissions = permissions;
     await project.save();
     return res.status(200).json({ message: "OK" })
 }
@@ -131,11 +133,29 @@ const deletePermission = async(req,res) =>{
     await project.save();
     return res.status(200).json({ message: "OK" })
 }
+
+
+const getAllPermisisons = async(req,res)=>{
+    
+    const projectId = req.params.projectId;
+    console.log("project id is", projectId);
+    if (projectId == null || projectId == undefined || !projectId) {
+        return res.status(401).json({ message: "need project id" })
+    }
+    //finding project
+    const project = await Project.findById(projectId);
+    if(!project || project == null || project == undefined){
+        return res.status(401).json({ message: "Project not found" })
+    }
+
+    return res.status(200).json({ message: "OK", permissions:project.permissions})
+}
 module.exports = {
     newProject,
     addPermission,
     deletePermission,
     deleteProject,
     getAllProjects,
-    getProjectInfo
+    getProjectInfo,
+    getAllPermisisons
 }
