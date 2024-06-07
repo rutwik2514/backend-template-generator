@@ -10,12 +10,13 @@ const RolesPage = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [newRoleName, setNewRoleName] = useState('');
   const [permissions, setPermissions] = useState([]);
-  const {  projectId} = useParams();
+  const [editRoleName, setEditRoleName] = useState('');
+  const { projectId } = useParams();
 
-  const handleAddRole = async() => {
+  const handleAddRole = async () => {
     if (newRoleName !== '') {
-      const response = await addNewRole(newRoleName,projectId,[]);
-      if(response.error){
+      const response = await addNewRole(newRoleName, projectId, []);
+      if (response.error) {
         toast.error("Something went wrong");
         return;
       }
@@ -24,35 +25,18 @@ const RolesPage = () => {
     }
   };
 
-  const handleEditRole = (roleIndex, updatedRoleName) => {
-    setRoles((prev) => {
-      const allRoles = prev.map((role, index) => {
-        if (index === roleIndex) {
-          return {
-            ...role,
-            name: updatedRoleName
-          };
-        } else {
-          return role;
-        }
-      });
-      return allRoles;
-    });
-    setSelectedRole(null);
-  };
-
-  const handleDeleteRole = async(roleIndex) => {
+  const handleDeleteRole = async (roleIndex) => {
     const res = await deleteRole(roles[roleIndex]._id, projectId);
-    if(res.error){
+    if (res.error) {
       toast.error("Something went wrong");
-    }
-    else{
+    } else {
       window.location.reload();
     }
   };
 
-  const handleSelectRole = (role) => {
-    setSelectedRole(role);
+  const handleSelectRole = (roleIndex) => {
+    setSelectedRole(roleIndex);
+    setEditRoleName(roles[roleIndex].name);
   };
 
   const handlePermissionChange = (roleIndex, permission) => {
@@ -88,14 +72,14 @@ const RolesPage = () => {
     }
   };
 
-  const handleSave = async(id,roleIndex) =>{
-    const update = await updateRole(id,roles[roleIndex].name,roles[roleIndex].permissions);
-    if(update.error){
+  const handleSave = async (id, roleIndex) => {
+    const update = await updateRole(id, editRoleName, roles[roleIndex].permissions);
+    if (update.error) {
       toast.error("something went wrong");
       return;
     }
     window.location.reload();
-  }
+  };
 
   useEffect(() => {
     getPermissionsAndRoles();
@@ -118,12 +102,17 @@ const RolesPage = () => {
         <button onClick={handleAddRole} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Role</button>
       </div>
       {roles.map((role, roleIndex) => (
-        <div key={roleIndex} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth:"30vw" }}>
+        <div key={roleIndex} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth: "30vw" }}>
           <h3 style={{ marginBottom: '10px' }}>
-            {selectedRole===roleIndex ? (
-              <form onSubmit={(e) => { e.preventDefault(); handleEditRole(roleIndex, e.target.roleName.value) }}>
-                <input type="text" defaultValue={role.name} name="roleName" required style={{ padding: '5px', marginRight: '10px' }} />
-              </form>
+            {selectedRole === roleIndex ? (
+              <input
+                type="text"
+                value={editRoleName}
+                name="roleName"
+                required
+                style={{ padding: '5px', marginRight: '10px' }}
+                onChange={(e) => setEditRoleName(e.target.value)}
+              />
             ) : (
               role.name
             )}
@@ -140,7 +129,7 @@ const RolesPage = () => {
                 {permission}
               </li>
             ))}
-              {selectedRole !== roleIndex && permissions.map((permission, index) => (
+            {selectedRole !== roleIndex && permissions.map((permission, index) => (
               <li key={index} style={{ marginBottom: '5px' }}>
                 <input
                   type="checkbox"
@@ -152,10 +141,10 @@ const RolesPage = () => {
               </li>
             ))}
           </ul>
-          {selectedRole===roleIndex ? (
+          {selectedRole === roleIndex ? (
             <>
-            <button onClick={() => setSelectedRole(null)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Cancel</button>
-            <button onClick={()=>handleSave(role._id,roleIndex)} type="submit" style={{ padding: '5px 10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Save</button>
+              <button onClick={() => setSelectedRole(null)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Cancel</button>
+              <button onClick={() => handleSave(role._id, roleIndex)} type="submit" style={{ padding: '5px 10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Save</button>
             </>
           ) : (
             <>
