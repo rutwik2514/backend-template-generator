@@ -11,12 +11,11 @@ import { AuthContext } from './context/Auth_Context';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchUser } from './api/auth';
-import PermissionsPage from './Components/Roles/PermissionsPage';
+import PermissionsPage from './Components/Permissions/PermissionsPage';
 import Navbar from './Components/Navbar/Navbar';
 import RolesPage from './Components/Roles/RolesPage';
-import Permission from './Components/Permission';
-// import NewProject from './Components/NewProject';
-import Project from './Components/Project';
+import Project from './Components/Project/Project';
+import Project_Dashboard from './Components/Project/Project_Dashboard';
 
 function App() {
   return (
@@ -31,7 +30,7 @@ function App() {
 const AppRoutes = () => {
   const location = useLocation();
   const [userData, setUserData] = useState({ user: "" })
-  const [permissions, setPermissions] = useState([]);
+  // const [permissions, setPermissions] = useState([]);
 
   //verifying token in local storage
   const verifyToken = async () => {
@@ -58,18 +57,17 @@ const AppRoutes = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ userData, setUserData, permissions, setPermissions }} >
+      <AuthContext.Provider value={{ userData, setUserData}} >
         <Routes>
           <Route exact path="/" element={<Homepage />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
-          <Route index exact path="/permission" element={<Permission   />} />
-          <Route index exact path="/project/:projectId" element={<Project   />} />
-
+          {/* <Route index exact path="/permission" element={<Permission   />} /> */}
+          <Route index exact path="/project/:projectId" element={<Project_Dashboard   />} />
           <Route exact path="/navbar" element={<Navbar/>}/>
-          <Route exact path='/permissions' element={<PermissionsPage />}/>
-          <Route exact path='/roles' element={<RolesPage />}/>
+          <Route exact path='/project/:projectId/permissions' element={<PermissionsPage />}/>
+          <Route exact path='/project/:projectId/roles' element={<RolesPage />}/>
         </Routes>
         <ToastContainer
           position="top-center"

@@ -25,5 +25,14 @@ const deletePermission = async (projectId, permission) => {
         return {data: null, error: error?.response?.data?.message};
     }
 };
+const getAllPermission = async(id) =>{
+    try {
+      const permissions = await axiosInstance.get(`/project/getPermissions/${id}`);
+      return {permissions: permissions?.data?.permissions, error:null};
+    } catch (error) {
+      console.log(error);
+      return {projects: "", error: error?.message}
+    }
+  }
 
-export {addPermissions, deletePermission};
+export {addPermissions, deletePermission,getAllPermission};
