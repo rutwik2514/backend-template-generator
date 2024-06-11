@@ -6,6 +6,7 @@
     "userSchema.js",
     "preetSchema.js",
     "rutwikSchema.js",
-    "loginSchema.js"
+    "loginSchema.js",
+    "login.js"
   ]
 }

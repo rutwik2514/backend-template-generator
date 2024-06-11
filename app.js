@@ -5,6 +5,7 @@ const cors = require("cors");
 const connect = require("./connect");
 const routes = require("./routes/route");
 const generateFiles = require("./new");
+const generateControllers = require("./dynamic");
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/api/v1", routes);
 //Starting server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
+  generateControllers();
   generateFiles();
   console.log(`Server running at port ${PORT}.`);
 });
