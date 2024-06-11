@@ -15,8 +15,11 @@ const schema = new mongoose.Schema({
     roles:[{
         type:mongoose.Types.ObjectId,
         ref:"Role"
+    }],
+    schemas:[{
+        type: mongoose.Types.ObjectId,
+        ref: "schemas"
     }]
-
 
 })
 module.exports = mongoose.model("Project", schema);

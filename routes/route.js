@@ -4,6 +4,7 @@ const {register,login, fetchUser} = require("../controllers/auth");
 const {checkAuthorizationHeaders} = require("../middlewares/authenticate");
 const { newProject, addPermission, deletePermission, deleteProject, getAllProjects, getProjectInfo, getAllPermisisons } = require("../controllers/project");
 const {newRole, deleteRole, updateRole } = require("../controllers/role");
+const {createSchema, updateSchema, deleteSchema} = require("../controllers/schemaDefine");
 
 //auth routes
 router.post("/auth/register",register);
@@ -27,5 +28,9 @@ router.delete("/role/deleteRole",checkAuthorizationHeaders,deleteRole)
 router.patch("/role/update",checkAuthorizationHeaders,updateRole)
 
 
+// schema routes
+router.post("/schema/new", checkAuthorizationHeaders, createSchema)
+router.delete("/schema/deleteSchema", checkAuthorizationHeaders, deleteSchema)
+router.patch("/schema/updateSchema", checkAuthorizationHeaders, updateSchema)
 
 module.exports = router;
