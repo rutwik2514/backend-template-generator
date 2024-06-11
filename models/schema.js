@@ -23,6 +23,9 @@ const schema = new mongoose.Schema({
         isRequired: {
             type: Boolean,
             default: false
+        },
+        content:{
+            type: mongoose.Schema.Types.Array
         }
     }],
     projectId: {
