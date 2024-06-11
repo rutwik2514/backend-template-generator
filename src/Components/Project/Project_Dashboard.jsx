@@ -8,9 +8,12 @@ function Project_Dashboard() {
     <>
     <button onClick={()=>navigate(`/project/${projectId}/permissions`)}>Add Permission</button>
     <button onClick={()=>navigate(`/project/${projectId}/roles`)}>Add Role</button>
+    <button onClick={()=>navigate(`/project/${projectId}/schema`)}>Add Schema</button>
+
     </>
 
   )
 }
+
 
 export default Project_Dashboard

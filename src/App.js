@@ -16,6 +16,8 @@ import Navbar from './Components/Navbar/Navbar';
 import RolesPage from './Components/Roles/RolesPage';
 import Project from './Components/Project/Project';
 import Project_Dashboard from './Components/Project/Project_Dashboard';
+import Schema from './Components/Schema/Schema';
+import Schema_create from './Components/Schema/Schema_create';
 
 function App() {
   return (
@@ -63,11 +65,15 @@ const AppRoutes = () => {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />
-          {/* <Route index exact path="/permission" element={<Permission   />} /> */}
           <Route index exact path="/project/:projectId" element={<Project_Dashboard   />} />
           <Route exact path="/navbar" element={<Navbar/>}/>
           <Route exact path='/project/:projectId/permissions' element={<PermissionsPage />}/>
           <Route exact path='/project/:projectId/roles' element={<RolesPage />}/>
+          
+          <Route exact path='/project/:projectId/schema' element={<Schema />}/>
+          <Route exact path='/project/:projectId/schema/create' element={<Schema_create />}/>
+
+
         </Routes>
         <ToastContainer
           position="top-center"
