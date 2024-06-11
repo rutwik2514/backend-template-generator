@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connect = require("./connect");
 const routes = require("./routes/route");
+const generateFiles = require("./new");
+
 dotenv.config();
 
 connect(process.env.MONGO_URI);
@@ -13,8 +15,11 @@ app.use(express.json());
 app.use(cors({ origin:'http://localhost:3000', credentials: true }));
 app.use("/api/v1", routes);
 
+
+
 //Starting server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
+  generateFiles();
   console.log(`Server running at port ${PORT}.`);
 });
