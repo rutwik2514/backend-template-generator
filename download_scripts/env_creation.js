@@ -1,21 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function setup() {
-    if (!fs.existsSync('nodemon.json')) {
-        const nodemonConfig = {
-            ignore: ["login.js"]
-        };
-
-        fs.writeFileSync('nodemon.json', JSON.stringify(nodemonConfig, null, 2));
-        console.log('nodemon.json configuration saved!');
-    } else {
-        console.log('nodemon.json already exists, skipping creation.');
-    }
-}
-
 async function generateEnv(projectName, userName) {
-    await setup();
 
     const parentDirectory = path.join(__dirname, '..');
 

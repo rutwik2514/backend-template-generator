@@ -1,16 +1,10 @@
 {
-  "name": "backend",
+  "name": "testproject1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "Downloads/*"
-    ]
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",

@@ -44,7 +44,7 @@ async function generateRoutes(schemas) {
 async function makeAuthRoutes(directory){
     let authRouteString = `const express = require("express");
 const { register, login } = require("../controllers/auth");
-const { checkAuthorizationHeaders, authorizeUser } = require("../middleware/authenticate");
+const { checkAuthorizationHeaders, authorizeUser } = require("../middlewares/authenticate");
 const router = express.Router();
 
 

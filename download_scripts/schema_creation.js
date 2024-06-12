@@ -141,5 +141,4 @@ module.exports = mongoose.model("Profile", schema);`
 
 }
 
-module.exports = generateSchemaFiles
-module.exports= generateProfileSchema
+module.exports = {generateSchemaFiles,generateProfileSchema}
