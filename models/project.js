@@ -18,7 +18,7 @@ const schema = new mongoose.Schema({
     }],
     schemas:[{
         type: mongoose.Types.ObjectId,
-        ref: "schemas"
+        ref: "SchemaDefine"
     }]
 
 })

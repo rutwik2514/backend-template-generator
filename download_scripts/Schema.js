@@ -13,72 +13,10 @@ function setup() {
     console.log('nodemon.json already exists, skipping creation.');
   }
 }
-async function generateFiles() {
+async function generateSchemaFiles(schemas) {
   await setup();
-  const schemas = [
-    {
-      "_id": {
-        "$oid": "666844e75ab2f868a2b7e1bf"
-      },
-      "name": "login",
-      "fields": [
-        {
-          "fieldName": "userfieldName",
-          "dataType": "String",
-          "isUnique": true,
-          "isRequired": true,
-          "content": [
-            ""
-          ],
-          "_id": {
-            "$oid": "666844e75ab2f868a2b7e1c0"
-          }
-        },
-        {
-          "fieldName": "password",
-          "dataType": "String",
-          "isUnique": true,
-          "isRequired": true,
-          "content": [
-            ""
-          ],
-          "_id": {
-            "$oid": "666844e75ab2f868a2b7e1c1"
-          }
-        },
-        {
-          "fieldName": "documents",
-          "dataType": "Array",
-          "isUnique": false,
-          "isRequired": true,
-          "content": [
-            {
-              "fieldName": "documentfieldName",
-              "isRequired": false,
-              "isUnique": false,
-              "dataType": "String"
-            },
-            {
-              "fieldName": "random",
-              "isRequired": false,
-              "isUnique": false,
-              "dataType": "Number"
-            }
-          ],
-          "_id": {
-            "$oid": "666844e75ab2f868a2b7e1c2"
-          }
-        }
-      ],
-      "projectId": {
-        "$oid": "665ea17077d0f3b15ab973e9"
-      },
-      "__v": 0
-    }
-
-  ];
   const directory = path.join(__dirname, 'generated_files');
-
+  console.log("schemas are", schemas);
   schemas.forEach(schema => {
     makeSchema(schema, directory);
   });
@@ -138,4 +76,4 @@ function addContent(content) {
   return schemaCode;
 }
 
-module.exports = generateFiles;
+module.exports = generateSchemaFiles

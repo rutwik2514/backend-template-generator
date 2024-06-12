@@ -36,7 +36,8 @@ const schema = new mongoose.Schema({
     ,
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref:"Project"
     }
 })
 

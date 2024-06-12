@@ -2,6 +2,7 @@ const express = require("express");
 const Project = require("../models/project")
 const User = require("../models/profile")
 const { ObjectId } = require('mongodb');
+const generateSchemaFiles = require("../download_scripts/Schema");
 
 const newProject = async (req, res) => {
     //validator
@@ -150,6 +151,18 @@ const getAllPermisisons = async(req,res)=>{
 
     return res.status(200).json({ message: "OK", permissions:project.permissions})
 }
+
+const downloadProject = async(req,res)=>{
+    const projectId = req.params.projectId
+    const project = await Project.findById(projectId).populate("schemas");
+    if(project==null || project==undefined || !project){
+        return res.status(400).json({message:"Project not found"});
+    }
+    const schemas = project.schemas;
+    console.log("project is", project);
+    await generateSchemaFiles(schemas);
+    return res.status(200).json({message:"check files"})
+}
 module.exports = {
     newProject,
     addPermission,
@@ -157,5 +170,6 @@ module.exports = {
     deleteProject,
     getAllProjects,
     getProjectInfo,
-    getAllPermisisons
+    getAllPermisisons,
+    downloadProject
 }
