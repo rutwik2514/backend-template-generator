@@ -47,12 +47,12 @@ router.post("/login", checkAuthorizationHeaders, login);
     
 // ${schemaName} routes
 const { create${controllerName}, update${controllerName}, delete${controllerName}, get${controllerName}, getAll${controllerName} } = require('../controllers/${schemaName.toLowerCase()}');
-
-router.post("/${schemaName.toLowerCase()}/create", checkAuthorizationHeaders, create${controllerName});
-router.put("/${schemaName.toLowerCase()}/update/:id", checkAuthorizationHeaders, update${controllerName});
-router.delete("/${schemaName.toLowerCase()}/delete/:id", checkAuthorizationHeaders, delete${controllerName});
-router.get("/${schemaName.toLowerCase()}/get/:id", checkAuthorizationHeaders, get${controllerName});
-router.get("/${schemaName.toLowerCase()}/getAll", checkAuthorizationHeaders, getAll${controllerName});
+// 
+router.post("/${schemaName.toLowerCase()}/create", checkAuthorizationHeaders,authorizeUser("create${schemaName}") ,create${controllerName});
+router.put("/${schemaName.toLowerCase()}/update/:id", checkAuthorizationHeaders,authorizeUser("update${schemaName}"), update${controllerName});
+router.delete("/${schemaName.toLowerCase()}/delete/:id", checkAuthorizationHeaders, authorizeUser("delete${schemaName}"), delete${controllerName});
+router.get("/${schemaName.toLowerCase()}/get/:id", checkAuthorizationHeaders, authorizeUser("read${schemaName}"), get${controllerName});
+router.get("/${schemaName.toLowerCase()}/getAll", checkAuthorizationHeaders, authorizeUser("read${schemaName}"), getAll${controllerName});
 `;
   });
 

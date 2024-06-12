@@ -30,15 +30,15 @@ const schema = new mongoose.Schema({
     }],
     keys: [
         {
-            keyName: {type:String}
+            keyName: { type: String }
         }
     ]
     ,
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:"Project"
-    }
+        ref: "Project"
+    },
 })
 
 module.exports = mongoose.model('SchemaDefine', schema);

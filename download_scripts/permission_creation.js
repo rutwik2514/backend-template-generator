@@ -20,7 +20,6 @@ async function generatePermissions(validPermissions, roles,restrictedRoles) {
     longBlockOfCode += `exports.RESTRICTED_ROLES = [${restrictedRolesString.join(', ')}]; \n`
     // Get the parent directory of the current directory
     const parentDirectory = path.join(__dirname, '..');
-
     // Define the path for the Downloads directory in the parent directory
     const downloadsDirectory = path.join(parentDirectory, 'Downloads');
 
