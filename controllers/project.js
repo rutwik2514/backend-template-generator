@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb');
 const generateSchemaFiles = require("../download_scripts/Schema");
 const generateControllers = require("../download_scripts/dynamic");
 const generateRoutes = require("../download_scripts/dynamicRoutes");
+const generateEnv = require("../download_scripts/dynamicEnv");
 
 const newProject = async (req, res) => {
     //validator
@@ -161,16 +162,22 @@ const makeControllers = async(schemas) =>{
 }
 
 const downloadProject = async(req,res)=>{
+    // finding user
+    const userId = req.access_token.id;
+    const user = await User.findById(userId);
+
+    // finding project
     const projectId = req.params.projectId
     const project = await Project.findById(projectId).populate("schemas");
     if(project==null || project==undefined || !project){
         return res.status(400).json({message:"Project not found"});
     }
     const schemas = project.schemas;
-    console.log("project is", project);
+    console.log("user is", user);
     await generateSchemaFiles(schemas)
     await makeControllers(schemas)
     await generateRoutes(schemas)
+    await generateEnv(project.name,user.userName)
     return res.status(200).json({message:"check files"})
 }
 module.exports = {
