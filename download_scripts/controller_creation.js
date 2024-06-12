@@ -234,11 +234,11 @@ const jwt = require('jsonwebtoken');
 const Profile = require('../models/profile')
 const { validate } = require("../middlewares/validate");
 const { checkIfSuperAdmin } = require("../middlewares/authenticate");
-const RESTRICTED_ROLES = require("../utils/permissions")
+const Permissions = require("../utils/permissions")
 
 const register = async (req, res) => {
     const { email, password, confirmPassword, userType } = req.body;
-    if (RESTRICTED_ROLES.incudes(userType)) {
+    if (Permissions.RESTRICTED_ROLES.includes(userType)) {
         const response = await checkIfSuperAdmin(req);
         if (response == false) {
             return res.status(401).json({ message: "You are not authorized to register" });

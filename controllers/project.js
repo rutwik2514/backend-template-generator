@@ -195,8 +195,7 @@ const downloadProject = async (req, res) => {
     await generateApp();
     await generateGitIgnore();
     await generatePackageJson(project.name);
-
-    return res.status(200).json({ message: "check files" })
+    return res.status(200).json({ message: "check files"})
 }
 
 
