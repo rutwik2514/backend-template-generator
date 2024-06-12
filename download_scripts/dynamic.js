@@ -17,29 +17,7 @@ function setup() {
 
 async function generateControllers(schema) {
     await setup();
-    // let schema = {
-    //     "name": "rutwik",
-    //     "keys": [
-    //         {
-    //             "keyName": "userfieldName",
-    //             "_id": {
-    //                 "$oid": "6668a20edb843d8db3aea60f"
-    //             }
-    //         },
-    //         {
-    //             "keyName": "password",
-    //             "_id": {
-    //                 "$oid": "6668a20edb843d8db3aea610"
-    //             }
-    //         },
-    //         {
-    //             "keyName": "documents",
-    //             "_id": {
-    //                 "$oid": "6668a20edb843d8db3aea611"
-    //             }
-    //         }
-    //     ],
-    // }
+
     //getting name
     const schemaName = schema.name;
     const keys = [];
@@ -48,10 +26,36 @@ async function generateControllers(schema) {
     })
     console.log("keys are", keys);
 
-    const directory = path.join(__dirname, 'controller_files');
+    // Get the parent directory of the current directory
+    const parentDirectory = path.join(__dirname, '..');
 
-    makeControllers(directory, schemaName, keys);
-    return { directory };
+    // Define the path for the Downloads directory in the parent directory
+    const downloadsDirectory = path.join(parentDirectory, 'Downloads');
+
+    // Create the Downloads directory if it doesn't exist
+    if (!fs.existsSync(downloadsDirectory)) {
+        fs.mkdirSync(downloadsDirectory, { recursive: true });
+        console.log(`Directory created: ${downloadsDirectory}`);
+    } else {
+        console.log(`Directory already exists: ${downloadsDirectory}`);
+    }
+
+    // Define the path for the generated_files directory within the Downloads directory
+    const controllerDirectory = path.join(downloadsDirectory, 'controllers');
+
+    // Create the generated_files directory if it doesn't exist
+    if (!fs.existsSync(controllerDirectory)) {
+        fs.mkdirSync(controllerDirectory, { recursive: true });
+        console.log(`Directory created: ${controllerDirectory}`);
+    } else {
+        console.log(`Directory already exists: ${controllerDirectory}`);
+    }
+
+    console.log(`Generated files will be stored in: ${controllerDirectory}`);
+
+
+    makeControllers(controllerDirectory, schemaName, keys);
+    return { parentDirectory };
 }
 
 function makeControllers(directory, schemaName, keys) {
@@ -65,7 +69,7 @@ function makeControllers(directory, schemaName, keys) {
     let controllersCode = '// Generated controllers based on user input\n';
     controllersCode += `const mongoose = require("mongoose"); \n`;
     controllersCode += `const express = require("express"); \n`;
-    controllersCode += `const ${modelName} = require('./${schemaName.toLowerCase()}_schema');\n\n`;
+    controllersCode += `const ${modelName} = require('../models/${schemaName.toLowerCase()}Schema');\n\n`;
     controllersCode += `// CRUD operations for ${schemaName}\n`;
     controllersCode += `// Create Controller \n`;
     controllersCode += `const create${schemaName.charAt(0).toUpperCase() + schemaName.slice(1)} = async (req, res) => { \n`;

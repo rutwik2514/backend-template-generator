@@ -1,16 +1,16 @@
 // Generated controllers based on user input
 const mongoose = require("mongoose"); 
 const express = require("express"); 
-const Rutwik = require('./rutwik_schema');
+const FinalCheck = require('../models/finalcheckSchema');
 
-// CRUD operations for rutwik
+// CRUD operations for finalCheck
 // Create Controller 
-const createRutwik = async (req, res) => { 
-    const { userfieldName, password, documents } = req.body;
+const createFinalCheck = async (req, res) => { 
+    const { Newest, second } = req.body;
     try {
-        const rutwik = await Rutwik.create({ userfieldName, password, documents }) 
-        await rutwik.save();
-        res.status(201).json(rutwik);
+        const finalcheck = await FinalCheck.create({ Newest, second }) 
+        await finalcheck.save();
+        res.status(201).json(finalcheck);
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
             for (it in error.errors) {
@@ -23,15 +23,15 @@ const createRutwik = async (req, res) => {
 };
 
 // Update Controller 
-const updateRutwik = async (req, res) => { 
-    const { _id, userfieldName, password, documents } = req.body;
+const updateFinalCheck = async (req, res) => { 
+    const { _id, Newest, second } = req.body;
     try {
-        const rutwik = await Rutwik.findByIdAndUpdate( _id, { userfieldName, password, documents },{new:true}) 
-        if (!rutwik) {
-            return res.status(404).send('rutwik not found');
+        const finalcheck = await FinalCheck.findByIdAndUpdate( _id, { Newest, second },{new:true}) 
+        if (!finalcheck) {
+            return res.status(404).send('finalcheck not found');
         }
-        await rutwik.save();
-        res.status(201).json(rutwik);
+        await finalcheck.save();
+        res.status(201).json(finalcheck);
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
             for (it in error.errors) {
@@ -44,15 +44,15 @@ const updateRutwik = async (req, res) => {
 };
 
 // Delete Controller 
-const deleteRutwik = async (req, res) => { 
+const deleteFinalCheck = async (req, res) => { 
     const { _id } = req.body;
     try {
-        const rutwik = await Rutwik.findById(_id)
-        if (!rutwik) {
-            return res.status(404).send('rutwik not found');
+        const finalcheck = await FinalCheck.findById(_id)
+        if (!finalcheck) {
+            return res.status(404).send('finalcheck not found');
         }
-        await Rutwik.deleteOne({_id: _id})
-        await rutwik.save();
+        await FinalCheck.deleteOne({_id: _id})
+        await finalcheck.save();
         res.status(201).json({message: "Deleted Successfully"});
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -66,14 +66,14 @@ const deleteRutwik = async (req, res) => {
 };
 
 // get by Id Controller 
-const getRutwik = async (req, res) => { 
+const getFinalCheck = async (req, res) => { 
     const { _id } = req.body;
     try {
-        const rutwik = await Rutwik.findById(_id)
-        if (!rutwik) {
-            return res.status(404).send('rutwik not found');
+        const finalcheck = await FinalCheck.findById(_id)
+        if (!finalcheck) {
+            return res.status(404).send('finalcheck not found');
         }
-        res.status(201).json(rutwik);
+        res.status(201).json(finalcheck);
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
             for (it in error.errors) {
@@ -86,13 +86,13 @@ const getRutwik = async (req, res) => {
 };
 
 // getAll Controller 
-const getAllRutwik = async (req, res) => { 
+const getAllFinalCheck = async (req, res) => { 
     try {
-        const rutwik = await Rutwik.find({})
-        if (!rutwik) {
+        const finalcheck = await FinalCheck.find({})
+        if (!finalcheck) {
             return res.status(404).send('Nothing found !!');
         }
-        res.status(201).json(rutwik);
+        res.status(201).json(finalcheck);
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
             for (it in error.errors) {
@@ -105,9 +105,9 @@ const getAllRutwik = async (req, res) => {
 };
 
 module.exports = {
-    createRutwik,
-    updateRutwik,
-    deleteRutwik,
-    getRutwik,
-    getAllRutwik
+    createFinalCheck,
+    updateFinalCheck,
+    deleteFinalCheck,
+    getFinalCheck,
+    getAllFinalCheck
 }

@@ -4,6 +4,7 @@ const User = require("../models/profile")
 const { ObjectId } = require('mongodb');
 const generateSchemaFiles = require("../download_scripts/Schema");
 const generateControllers = require("../download_scripts/dynamic");
+const generateRoutes = require("../download_scripts/dynamicRoutes");
 
 const newProject = async (req, res) => {
     //validator
@@ -167,8 +168,9 @@ const downloadProject = async(req,res)=>{
     }
     const schemas = project.schemas;
     console.log("project is", project);
-    await generateSchemaFiles(schemas);
+    await generateSchemaFiles(schemas)
     await makeControllers(schemas)
+    await generateRoutes(schemas)
     return res.status(200).json({message:"check files"})
 }
 module.exports = {

@@ -15,14 +15,40 @@ function setup() {
 }
 async function generateSchemaFiles(schemas) {
   await setup();
-  const directory = path.join(__dirname, 'generated_files');
+  // Get the parent directory of the current directory
+  const parentDirectory = path.join(__dirname, '..');
+
+  // Define the path for the Downloads directory in the parent directory
+  const downloadsDirectory = path.join(parentDirectory, 'Downloads');
+
+  // Create the Downloads directory if it doesn't exist
+  if (!fs.existsSync(downloadsDirectory)) {
+    fs.mkdirSync(downloadsDirectory, { recursive: true });
+    console.log(`Directory created: ${downloadsDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${downloadsDirectory}`);
+  }
+
+  // Define the path for the generated_files directory within the Downloads directory
+  const modelDirectory = path.join(downloadsDirectory, 'models');
+
+  // Create the generated_files directory if it doesn't exist
+  if (!fs.existsSync(modelDirectory)) {
+    fs.mkdirSync(modelDirectory, { recursive: true });
+    console.log(`Directory created: ${modelDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${modelDirectory}`);
+  }
+
+  console.log(`Generated files will be stored in: ${modelDirectory}`);
+
   console.log("schemas are", schemas);
   schemas.forEach(schema => {
-    makeSchema(schema, directory);
+    makeSchema(schema, modelDirectory);
   });
 
 
-  return { directory };
+  return { parentDirectory };
 }
 
 function makeSchema(schema, directory) {
@@ -68,9 +94,9 @@ function addContent(content) {
       schemaCode += `    \n},\n`;
     }
     else {
-      schemaCode += `{ ${field.fieldName} : [\n{ \n`
+      schemaCode += ` ${field.fieldName} : [\n{ \n`
       schemaCode += addContent(field.content);
-      schemaCode += `}\n]\n},\n`
+      schemaCode += `}\n]\n,\n`
     }
   })
   return schemaCode;
