@@ -88,9 +88,6 @@ async function generateFiles() {
 }
 
 function makeSchema(schema, directory) {
-  if (schema.name == "preet") {
-    console.log("schema", schema);
-  }
   const schemaFileName = `${schema.name.toLowerCase()}Schema.js`;
   const schemaFilePath = path.join(directory, schemaFileName);
   let schemaCode = `const mongoose = require('mongoose');\n\n`;
@@ -104,9 +101,10 @@ function makeSchema(schema, directory) {
 }
 function schemaString(schema) {
   let schemaCode = "";
+  let keys = [];
   schema?.fields?.forEach(field => {
+    keys.push(field.fieldName);
     if (field.dataType !== "Array") {
-      console.log("adding to string", field);
       schemaCode += `    ${field.fieldName}: { \n`;
       schemaCode += `        dataType: ${field.dataType},\n`;
       schemaCode += `        required: ${field.isRequired},\n`;
@@ -122,11 +120,9 @@ function schemaString(schema) {
   return schemaCode;
 }
 function addContent(content) {
-  console.log("came in content", content);
   let schemaCode = "";
   content.forEach(field => {
     if (field.dataType !== "Array") {
-      console.log("adding to string", field);
       schemaCode += `  \n   ${field.fieldName}: { \n`;
       schemaCode += `        dataType: ${field.dataType},\n`;
       schemaCode += `        required: ${field.isRequired},\n`;

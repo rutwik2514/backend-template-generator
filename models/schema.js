@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         unqiue: true
-    }, 
+    },
     fields: [{
         fieldName: {
             type: String,
@@ -24,10 +24,16 @@ const schema = new mongoose.Schema({
             type: Boolean,
             default: false
         },
-        content:{
+        content: {
             type: mongoose.Schema.Types.Array
         }
     }],
+    keys: [
+        {
+            keyName: {type:String}
+        }
+    ]
+    ,
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true

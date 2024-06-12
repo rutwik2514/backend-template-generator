@@ -20,10 +20,15 @@ const createSchema = async (req, res) => {
     }
 
     // creating schema
+    let keys = [];
+    fields.map((field,index)=>{
+        keys.push({keyName : `${field.fieldName}`});
+    })
     const newSchema = await SchemaDefine.create({
         name: name,
         fields: fields,
-        projectId: projectId
+        projectId: projectId,
+        keys:keys
     });
     const schemaId = newSchema._id;
 
