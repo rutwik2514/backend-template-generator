@@ -240,6 +240,9 @@ const register = async (req, res) => {
             return res.status(401).json({ message: "You are not authorized to register" });
         }
     }
+    if(!Permissions.ROLES.includes(userType)){
+        return res.status(401).json({ message: "No such user type exists" });
+    }
     //validators
     if (!validate("email", email)) {
         res.status(401).json({ message: "Invalid Email, Please check again" });

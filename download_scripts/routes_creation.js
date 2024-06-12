@@ -42,7 +42,6 @@ router.post("/login", checkAuthorizationHeaders, login);
   schemas.forEach((schema) => {
     const schemaName = schema.name;
     const controllerName = schemaName.charAt(0).toUpperCase() + schemaName.slice(1);
-
     authRouteString += `
     
 // ${schemaName} routes

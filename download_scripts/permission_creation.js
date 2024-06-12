@@ -3,16 +3,20 @@ const path = require('path');
 async function generatePermissions(validPermissions, roles,restrictedRoles) {
 
     let roleArray = [];
+    let roleNames = [];
     function addRole(role, values) {
         const dynamicVariableName = `${role.toUpperCase()}`;
         roleArray[dynamicVariableName] = values;
     }
     for (let i = 0; i < roles.length; i++) {
         addRole(roles[i].name, roles[i].permissions);
+        roleNames.push(roles[i].name);
     }
     const permissionsAsString = validPermissions.map(permission => `"${permission}"`);
     const restrictedRolesString = restrictedRoles.map(role => `"${role}"`);
+    const roleNamesString = roleNames.map(role=>`"${role}"`)
     let longBlockOfCode = `exports.PERMISSIONS = [${permissionsAsString.join(', ')}]; \n`
+    longBlockOfCode+=`exports.ROLES = [${roleNamesString.join(', ')}] \n`;
     for (let key in roleArray) {
         let rolePermissions = roleArray[key].map(permission => `"${permission}"`);
         longBlockOfCode += `exports.${key} = [${rolePermissions.join(', ')}]; \n`
