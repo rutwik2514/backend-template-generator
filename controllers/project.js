@@ -3,6 +3,7 @@ const Project = require("../models/project")
 const User = require("../models/profile")
 const { ObjectId } = require('mongodb');
 const generateSchemaFiles = require("../download_scripts/Schema");
+const generateControllers = require("../download_scripts/dynamic");
 
 const newProject = async (req, res) => {
     //validator
@@ -152,6 +153,12 @@ const getAllPermisisons = async(req,res)=>{
     return res.status(200).json({ message: "OK", permissions:project.permissions})
 }
 
+const makeControllers = async(schemas) =>{
+    schemas.map(async (schema)=>{
+        await generateControllers(schema);
+    })
+}
+
 const downloadProject = async(req,res)=>{
     const projectId = req.params.projectId
     const project = await Project.findById(projectId).populate("schemas");
@@ -161,6 +168,7 @@ const downloadProject = async(req,res)=>{
     const schemas = project.schemas;
     console.log("project is", project);
     await generateSchemaFiles(schemas);
+    await makeControllers(schemas)
     return res.status(200).json({message:"check files"})
 }
 module.exports = {

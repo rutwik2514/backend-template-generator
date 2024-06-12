@@ -15,31 +15,31 @@ function setup() {
     }
 }
 
-async function generateControllers() {
+async function generateControllers(schema) {
     await setup();
-    let schema = {
-        "name": "rutwik",
-        "keys": [
-            {
-                "keyName": "userfieldName",
-                "_id": {
-                    "$oid": "6668a20edb843d8db3aea60f"
-                }
-            },
-            {
-                "keyName": "password",
-                "_id": {
-                    "$oid": "6668a20edb843d8db3aea610"
-                }
-            },
-            {
-                "keyName": "documents",
-                "_id": {
-                    "$oid": "6668a20edb843d8db3aea611"
-                }
-            }
-        ],
-    }
+    // let schema = {
+    //     "name": "rutwik",
+    //     "keys": [
+    //         {
+    //             "keyName": "userfieldName",
+    //             "_id": {
+    //                 "$oid": "6668a20edb843d8db3aea60f"
+    //             }
+    //         },
+    //         {
+    //             "keyName": "password",
+    //             "_id": {
+    //                 "$oid": "6668a20edb843d8db3aea610"
+    //             }
+    //         },
+    //         {
+    //             "keyName": "documents",
+    //             "_id": {
+    //                 "$oid": "6668a20edb843d8db3aea611"
+    //             }
+    //         }
+    //     ],
+    // }
     //getting name
     const schemaName = schema.name;
     const keys = [];
