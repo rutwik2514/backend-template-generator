@@ -44,7 +44,7 @@ function schemaString(schema) {
     keys.push(field.fieldName);
     if (field.dataType !== "Array") {
       schemaCode += `    ${field.fieldName}: { \n`;
-      schemaCode += `        dataType: ${field.dataType},\n`;
+      schemaCode += `        type: ${field.dataType},\n`;
       schemaCode += `        required: ${field.isRequired},\n`;
       schemaCode += `        unique: ${field.isUnique}\n`;
       schemaCode += `    },\n`;
@@ -62,7 +62,7 @@ function addContent(content) {
   content.forEach(field => {
     if (field.dataType !== "Array") {
       schemaCode += `  \n   ${field.fieldName}: { \n`;
-      schemaCode += `        dataType: ${field.dataType},\n`;
+      schemaCode += `        type: ${field.dataType},\n`;
       schemaCode += `        required: ${field.isRequired},\n`;
       schemaCode += `        unique: ${field.isUnique}\n`;
       schemaCode += `    \n},\n`;
