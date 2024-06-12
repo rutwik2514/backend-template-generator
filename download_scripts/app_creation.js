@@ -24,7 +24,7 @@ const app = express();
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connect = require("./connect");
-const routes = require("./routes/");
+const routes = require("./routes/route");
     
 dotenv.config();
     

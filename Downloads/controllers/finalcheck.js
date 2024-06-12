@@ -24,7 +24,8 @@ const createFinalCheck = async (req, res) => {
 
 // Update Controller 
 const updateFinalCheck = async (req, res) => { 
-    const { _id, Newest, second } = req.body;
+    const _id=req.params.id;
+    const { Newest, second } = req.body;
     try {
         const finalcheck = await FinalCheck.findByIdAndUpdate( _id, { Newest, second },{new:true}) 
         if (!finalcheck) {
@@ -45,7 +46,7 @@ const updateFinalCheck = async (req, res) => {
 
 // Delete Controller 
 const deleteFinalCheck = async (req, res) => { 
-    const { _id } = req.body;
+    const _id=req.params.id;
     try {
         const finalcheck = await FinalCheck.findById(_id)
         if (!finalcheck) {
@@ -67,7 +68,7 @@ const deleteFinalCheck = async (req, res) => {
 
 // get by Id Controller 
 const getFinalCheck = async (req, res) => { 
-    const { _id } = req.body;
+    const _id=req.params.id;
     try {
         const finalcheck = await FinalCheck.findById(_id)
         if (!finalcheck) {
