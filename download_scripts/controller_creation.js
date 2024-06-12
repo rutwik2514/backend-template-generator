@@ -100,8 +100,8 @@ function makeControllers(directory, schemaName, keys) {
     //making update controller
     controllersCode += `// Update Controller \n`;
     controllersCode += `const update${schemaName.charAt(0).toUpperCase() + schemaName.slice(1)} = async (req, res) => { \n`;
+    controllersCode += `    const _id=req.params.id;\n`;
     controllersCode += `    const { `;
-    controllersCode += `_id, `
     keys.map((key, idx) => {
         if (idx !== keys.length - 1) {
             controllersCode += `${key}` + `, `;
@@ -142,9 +142,7 @@ function makeControllers(directory, schemaName, keys) {
     // making delete controller
     controllersCode += `// Delete Controller \n`;
     controllersCode += `const delete${schemaName.charAt(0).toUpperCase() + schemaName.slice(1)} = async (req, res) => { \n`;
-    controllersCode += `    const { `;
-    controllersCode += `_id`
-    controllersCode += ` } = req.body;\n`;
+    controllersCode += `    const _id=req.params.id;\n`;
     controllersCode += `    try {\n`;
     controllersCode += `        const ${schemaName.toLowerCase()} = await ${modelName}.findById(_id)`;
     controllersCode += `\n`;
@@ -170,9 +168,7 @@ function makeControllers(directory, schemaName, keys) {
     // making get by Id controller
     controllersCode += `// get by Id Controller \n`;
     controllersCode += `const get${schemaName.charAt(0).toUpperCase() + schemaName.slice(1)} = async (req, res) => { \n`;
-    controllersCode += `    const { `;
-    controllersCode += `_id`
-    controllersCode += ` } = req.body;\n`;
+    controllersCode += `    const _id=req.params.id;\n`;
     controllersCode += `    try {\n`;
     controllersCode += `        const ${schemaName.toLowerCase()} = await ${modelName}.findById(_id)`;
     controllersCode += `\n`;
@@ -227,7 +223,7 @@ function makeControllers(directory, schemaName, keys) {
     fs.writeFileSync(controllerFilePath, controllersCode);
 }
 
-async function createAuthController(directory){
+async function createAuthController(directory) {
     let authControllerString = `const express = require("express");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -328,8 +324,8 @@ module.exports = {
     register,
     login
 }`
-const authControllerPath = path.join(directory, "auth.js")
-  fs.writeFileSync(authControllerPath, authControllerString)
+    const authControllerPath = path.join(directory, "auth.js")
+    fs.writeFileSync(authControllerPath, authControllerString)
 }
 
 module.exports = generateControllers

@@ -24,7 +24,8 @@ const createRutwik = async (req, res) => {
 
 // Update Controller 
 const updateRutwik = async (req, res) => { 
-    const { _id, userfieldName, password, documents } = req.body;
+    const _id=req.params.id;
+    const { userfieldName, password, documents } = req.body;
     try {
         const rutwik = await Rutwik.findByIdAndUpdate( _id, { userfieldName, password, documents },{new:true}) 
         if (!rutwik) {
@@ -45,7 +46,7 @@ const updateRutwik = async (req, res) => {
 
 // Delete Controller 
 const deleteRutwik = async (req, res) => { 
-    const { _id } = req.body;
+    const _id=req.params.id;
     try {
         const rutwik = await Rutwik.findById(_id)
         if (!rutwik) {
@@ -67,7 +68,7 @@ const deleteRutwik = async (req, res) => {
 
 // get by Id Controller 
 const getRutwik = async (req, res) => { 
-    const { _id } = req.body;
+    const _id=req.params.id;
     try {
         const rutwik = await Rutwik.findById(_id)
         if (!rutwik) {

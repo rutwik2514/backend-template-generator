@@ -1,91 +1,69 @@
 const fs = require('fs');
 const path = require('path');
 
-
 async function generateRoutes(schemas) {
+  console.log('schema from routes is', schemas);
 
+  // Define directory paths
+  const parentDirectory = path.join(__dirname, '..');
+  const downloadsDirectory = path.join(parentDirectory, 'Downloads');
+  const routesDirectory = path.join(downloadsDirectory, 'routes');
 
-    console.log('schema from routes is', schemas);
+  // Create directories if they don't exist
+  if (!fs.existsSync(downloadsDirectory)) {
+    fs.mkdirSync(downloadsDirectory, { recursive: true });
+    console.log(`Directory created: ${downloadsDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${downloadsDirectory}`);
+  }
 
-    // Get the parent directory of the current directory
-    const parentDirectory = path.join(__dirname, '..');
+  if (!fs.existsSync(routesDirectory)) {
+    fs.mkdirSync(routesDirectory, { recursive: true });
+    console.log(`Directory created: ${routesDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${routesDirectory}`);
+  }
 
-    // Define the path for the Downloads directory in the parent directory
-    const downloadsDirectory = path.join(parentDirectory, 'Downloads');
+  console.log(`Generated files will be stored in: ${routesDirectory}`);
 
-    // Create the Downloads directory if it doesn't exist
-    if (!fs.existsSync(downloadsDirectory)) {
-        fs.mkdirSync(downloadsDirectory, { recursive: true });
-        console.log(`Directory created: ${downloadsDirectory}`);
-    } else {
-        console.log(`Directory already exists: ${downloadsDirectory}`);
-    }
-
-    // Define the path for the generated_files directory within the Downloads directory
-    const routesDirectory = path.join(downloadsDirectory, 'routes');
-
-    // Create the generated_files directory if it doesn't exist
-    if (!fs.existsSync(routesDirectory)) {
-        fs.mkdirSync(routesDirectory, { recursive: true });
-        console.log(`Directory created: ${routesDirectory}`);
-    } else {
-        console.log(`Directory already exists: ${routesDirectory}`);
-    }
-
-    console.log(`Generated files will be stored in: ${routesDirectory}`);
-
-    await schemas.forEach((schema)=>{
-        makeRoutes(routesDirectory,schema.name)
-    })
-    await makeAuthRoutes(routesDirectory)
-
-}
-
-async function makeAuthRoutes(directory){
-    let authRouteString = `const express = require("express");
+  // Generate auth route string
+  let authRouteString = `const express = require("express");
+const router = express.Router();\n
+// auth routes
 const { register, login } = require("../controllers/auth");
 const { checkAuthorizationHeaders, authorizeUser } = require("../middlewares/authenticate");
-const router = express.Router();
 
 
-router.post("/register" , checkAuthorizationHeaders, register);
-router.post("/login",login);
+router.post("/register", register);
+router.post("/login", checkAuthorizationHeaders, login);
+`;
 
-
-module.exports = router;
-
-`
-const authRoutesPath = path.join(directory, "auth.js")
-fs.writeFileSync(authRoutesPath, authRouteString)
-
-}
-
-function makeRoutes(directory, schemaName) {
-    const routesFileName = `${schemaName.toLowerCase()}.js`;
-    const routesFilePath = path.join(directory, routesFileName);
+  // Loop through schemas and generate routes
+  schemas.forEach((schema) => {
+    const schemaName = schema.name;
     const controllerName = schemaName.charAt(0).toUpperCase() + schemaName.slice(1);
 
-    let routesCode = '// Generated routes based on user input\n';
-    routesCode += `const express = require('express');\n`;
-    routesCode += `const router = express.Router();\n`;
-    routesCode += `const {`;
-    routesCode += `create${controllerName}, `;
-    routesCode += `update${controllerName}, `;
-    routesCode += `delete${controllerName}, `;
-    routesCode += `get${controllerName}, `;
-    routesCode += `getAll${controllerName} `;
-    routesCode += `} = require('../controllers/${schemaName.toLowerCase()}');\n\n`;
+    authRouteString += `
+    
+// ${schemaName} routes
+const { create${controllerName}, update${controllerName}, delete${controllerName}, get${controllerName}, getAll${controllerName} } = require('../controllers/${schemaName.toLowerCase()}');
 
-    routesCode += `// Define routes for ${schemaName}\n`;
-    routesCode += `router.post('/create', create${controllerName});\n`;
-    routesCode += `router.put('/update/:id', update${controllerName});\n`;
-    routesCode += `router.delete('/delete/:id', delete${controllerName});\n`;
-    routesCode += `router.get('/get/:id', get${controllerName});\n`;
-    routesCode += `router.get('/getAll', getAll${controllerName});\n\n`;
+router.post("/${schemaName.toLowerCase()}/create", checkAuthorizationHeaders, create${controllerName});
+router.put("/${schemaName.toLowerCase()}/update/:id", checkAuthorizationHeaders, update${controllerName});
+router.delete("/${schemaName.toLowerCase()}/delete/:id", checkAuthorizationHeaders, delete${controllerName});
+router.get("/${schemaName.toLowerCase()}/get/:id", checkAuthorizationHeaders, get${controllerName});
+router.get("/${schemaName.toLowerCase()}/getAll", checkAuthorizationHeaders, getAll${controllerName});
+`;
+  });
 
-    routesCode += `module.exports = router;\n`;
+  authRouteString += `
+  
+module.exports = router;
+`;
 
-    fs.writeFileSync(routesFilePath, routesCode);
+  // Write auth routes to file
+  const authRoutesPath = path.join(routesDirectory, "route.js");
+  fs.writeFileSync(authRoutesPath, authRouteString);
 }
 
 module.exports = generateRoutes;
