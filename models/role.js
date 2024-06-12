@@ -11,5 +11,8 @@ const schema = new mongoose.Schema({
     permissions:[{
         type:String,
     }],
+    isRestricted: {
+        type: Boolean,
+    }
 })
 module.exports = mongoose.model("Role", schema);

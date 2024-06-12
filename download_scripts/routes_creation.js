@@ -1,22 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-function setup() {
-    if (!fs.existsSync('nodemon.json')) {
-        const nodemonConfig = {
-            ignore: ["login.js"]
-        };
-
-        fs.writeFileSync('nodemon.json', JSON.stringify(nodemonConfig, null, 2));
-        console.log('nodemon.json configuration saved!');
-    } else {
-        console.log('nodemon.json already exists, skipping creation.');
-    }
-}
 
 async function generateRoutes(schemas) {
 
-    await setup();
 
     console.log('schema from routes is', schemas);
 
@@ -47,9 +34,29 @@ async function generateRoutes(schemas) {
 
     console.log(`Generated files will be stored in: ${routesDirectory}`);
 
-    schemas.forEach((schema)=>{
+    await schemas.forEach((schema)=>{
         makeRoutes(routesDirectory,schema.name)
     })
+    await makeAuthRoutes(routesDirectory)
+
+}
+
+async function makeAuthRoutes(directory){
+    let authRouteString = `const express = require("express");
+const { register, login } = require("../controllers/auth");
+const { checkAuthorizationHeaders, authorizeUser } = require("../middleware/authenticate");
+const router = express.Router();
+
+
+router.post("/register" , checkAuthorizationHeaders, register);
+router.post("/login",login);
+
+
+module.exports = router;
+
+`
+const authRoutesPath = path.join(directory, "auth.js")
+fs.writeFileSync(authRoutesPath, authRouteString)
 
 }
 

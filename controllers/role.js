@@ -4,7 +4,7 @@ const Project = require("../models/project")
 const { ObjectId } = require('mongodb');
 const newRole = async (req, res) => {
     //validators
-    const { name, projectId, permissions } = req.body;
+    const { name, projectId, permissions,isRestricted } = req.body;
     if (!projectId || projectId == null || projectId == undefined) {
         return res.status(401).json({ message: "need Project ID" })
     }
@@ -19,9 +19,12 @@ const newRole = async (req, res) => {
     }
 
     //creating role
-    const newRole = await Role.create({ name: name, projectId: projectId, permissions: permissions })
+    const newRole = await Role.create({ name: name, projectId: projectId, permissions: permissions, isRestricted:isRestricted })
     const roleId = newRole._id;
     //updating project
+    if(isRestricted){
+        project.restrictedRoles.push(name);
+    }
     project.roles.push(roleId);
     await project.save();
     return res.status(200).json({ message: "OK" })

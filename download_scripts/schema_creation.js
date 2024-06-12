@@ -1,20 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function setup() {
-  if (!fs.existsSync('nodemon.json')) {
-    const nodemonConfig = {
-      ignore: ["permissions.js", "preet.js", "newcheckSchema.js", "userSchema.js", "preetSchema.js"]
-    };
-
-    fs.writeFileSync('nodemon.json', JSON.stringify(nodemonConfig, null, 2));
-    console.log('nodemon.json configuration saved!');
-  } else {
-    console.log('nodemon.json already exists, skipping creation.');
-  }
-}
 async function generateSchemaFiles(schemas) {
-  await setup();
   // Get the parent directory of the current directory
   const parentDirectory = path.join(__dirname, '..');
 
@@ -102,4 +89,57 @@ function addContent(content) {
   return schemaCode;
 }
 
+async function generateProfileSchema() {
+  // Get the parent directory of the current directory
+  const parentDirectory = path.join(__dirname, '..');
+
+  // Define the path for the Downloads directory in the parent directory
+  const downloadsDirectory = path.join(parentDirectory, 'Downloads');
+
+  // Create the Downloads directory if it doesn't exist
+  if (!fs.existsSync(downloadsDirectory)) {
+    fs.mkdirSync(downloadsDirectory, { recursive: true });
+    console.log(`Directory created: ${downloadsDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${downloadsDirectory}`);
+  }
+
+  // Define the path for the generated_files directory within the Downloads directory
+  const modelDirectory = path.join(downloadsDirectory, 'models');
+
+  // Create the generated_files directory if it doesn't exist
+  if (!fs.existsSync(modelDirectory)) {
+    fs.mkdirSync(modelDirectory, { recursive: true });
+    console.log(`Directory created: ${modelDirectory}`);
+  } else {
+    console.log(`Directory already exists: ${modelDirectory}`);
+  }
+
+  console.log(`Generated files will be stored in: ${modelDirectory}`);
+
+  let profileCode = `const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema({
+    email:{
+        type: String,
+        required: [true, "Must provide Email"],
+        unique: [true, "Email should be unique."]
+    },
+    password: {
+        type: String,
+        required: [true, "Must provide password"],
+        minlength: [6, "Length of password should be atleast 6 characters."]
+    },
+    userType:{
+        type:String,
+        required: [true, "Must provide user type"],
+    }
+})
+module.exports = mongoose.model("Profile", schema);`
+  const schemaFilePath = path.join(modelDirectory, "profile.js");
+  fs.writeFileSync(schemaFilePath, profileCode);
+
+}
+
 module.exports = generateSchemaFiles
+module.exports= generateProfileSchema

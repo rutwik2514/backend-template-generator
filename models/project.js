@@ -16,6 +16,9 @@ const schema = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref:"Role"
     }],
+    restrictedRoles:[{
+        type:String
+    }],
     schemas:[{
         type: mongoose.Types.ObjectId,
         ref: "SchemaDefine"

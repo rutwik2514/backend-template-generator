@@ -2,10 +2,12 @@ const express = require("express");
 const Project = require("../models/project")
 const User = require("../models/profile")
 const { ObjectId } = require('mongodb');
-const generateSchemaFiles = require("../download_scripts/Schema");
-const generateControllers = require("../download_scripts/dynamic");
-const generateRoutes = require("../download_scripts/dynamicRoutes");
-const generateEnv = require("../download_scripts/dynamicEnv");
+const generateSchemaFiles = require("../download_scripts/schema_creation");
+const generateControllers = require("../download_scripts/controller_creation");
+const generateRoutes = require("../download_scripts/routes_creation");
+const generatePermissions = require("../download_scripts/permission_creation");
+const generateProfileSchema = require("../download_scripts/schema_creation");
+const generateMiddlewares = require("../download_scripts/middleware_creation");
 
 const newProject = async (req, res) => {
     //validator
@@ -168,7 +170,7 @@ const downloadProject = async(req,res)=>{
 
     // finding project
     const projectId = req.params.projectId
-    const project = await Project.findById(projectId).populate("schemas");
+    const project = await Project.findById(projectId).populate("schemas").populate("roles");
     if(project==null || project==undefined || !project){
         return res.status(400).json({message:"Project not found"});
     }
@@ -177,7 +179,9 @@ const downloadProject = async(req,res)=>{
     await generateSchemaFiles(schemas)
     await makeControllers(schemas)
     await generateRoutes(schemas)
-    await generateEnv(project.name,user.userName)
+    await generatePermissions(project.permissions,project.roles,project.restrictedRoles)
+    await generateProfileSchema();
+    await generateMiddlewares();
     return res.status(200).json({message:"check files"})
 }
 module.exports = {
