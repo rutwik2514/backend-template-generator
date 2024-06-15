@@ -192,7 +192,7 @@ const getAllPermisisons = async (req, res) => {
 const addRole = async (req, res) => {
     try {
         const { projectId } = req.params;
-        const { role, isRestricted,name } = req.body;
+        const { role, isRestricted, name } = req.body;
         if (!role || role == undefined || role == null) {
             return res.status(500).json({ message: "Need role" })
         }
@@ -200,12 +200,12 @@ const addRole = async (req, res) => {
         if (!project || project == undefined || project == null) {
             return res.status(500).json({ message: "Project not found" })
         }
-        if(isRestricted){
+        if (isRestricted) {
             project.restrictedRoles.push(name);
         }
         project.roles.push(role);
         await project.save();
-        return res.status(200).json({mesage:"Role added Succesffuly"})
+        return res.status(200).json({ mesage: "Role added Succesffuly" })
 
     } catch (error) {
         console.log("Error occured in add role controller", error);
@@ -214,10 +214,11 @@ const addRole = async (req, res) => {
     }
 }
 
-const deleteRole = async(req,res) => {
+const deleteRole = async (req, res) => {
     try {
-        const {projectId} = req.params;
-        const {role,name} = req.body;
+        const { projectId } = req.params;
+        const { role, name } = req.body;
+        console.log('body is', req.body);
         if (!role || role == undefined || role == null) {
             return res.status(500).json({ message: "Need role" })
         }
@@ -233,26 +234,25 @@ const deleteRole = async(req,res) => {
                     tempRestrictedRoles.push(role);
                 }
             })
-            );
+        );
         project.restrictedRoles = tempRestrictedRoles;
-    
+
         let tempRoles = [];
         await Promise.all(
-            project?.roles?.map(async (roleId) => {
-                if(!roleId.equals(new ObjectId(role))){
-                    console.log("pushing roles", roleId, role);
-                    tempRoles.push(roleId);
+            project?.restrictedRoles?.map(async (role) => {
+                if(!role.equals(new ObjectId(role))){
+                    tempRoles.push(role);
                 }
             })
             );
         // console.log("temproles are");
         project.roles=tempRoles;
         await project.save();
-        return res.status(200).json({message:"Role Deleted Successfully"});
+        return res.status(200).json({ message: "Role Deleted Successfully" });
 
     } catch (error) {
         console.log("Error occured in add role controller");
-        return res.status(500).json({message:"Something went wrong"});
+        return res.status(500).json({ message: "Something went wrong" });
     }
 }
 
