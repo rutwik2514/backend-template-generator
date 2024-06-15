@@ -7,7 +7,8 @@ const asyncWrapper = require('../middlewares/async');
 const newRole = asyncWrapper(async (req, res) => {
     //validators
     const token = req.headers['authorization'];
-    const { name, projectId, permissions, isRestricted } = req.body;
+    const {projectId}=req.params;
+    const { name, permissions, isRestricted } = req.body;
     if (!projectId || projectId == null || projectId == undefined) {
         return res.status(401).json({ message: "need Project ID" })
     }
@@ -20,7 +21,6 @@ const newRole = asyncWrapper(async (req, res) => {
     const roleId = newRole._id;
 
     //updating project
-
     try {
         const res = await axios.post(`${process.env.PROJECT_SERVICE_URL}/addRole/${projectId}`, {
             name: name,
@@ -57,7 +57,6 @@ const deleteRole = asyncWrapper(async (req, res) => {
 
     //deleting role
     await Role.deleteOne({ _id: role })
-
     try {
         const res = await axios.delete(`${process.env.PROJECT_SERVICE_URL}/deleteRole/${projectId}`,
             {
@@ -89,7 +88,6 @@ const updateRole = asyncWrapper(async (req, res) => {
     if (tempRole == null || tempRole == undefined || !tempRole) {
         return res.status(500).json({ message: "role not found" })
     }
-
     //updating name and permissions
     if (!(permissions === null) && !(permissions === undefined) && (permissions)) {
         tempRole.permissions = permissions;
@@ -99,12 +97,31 @@ const updateRole = asyncWrapper(async (req, res) => {
     }
     await tempRole.save();
     return res.status(200).json({ message: "OK" })
-
 })
 
+const getRoles = async(req,res) =>{
+    try {
+        const {roles} = req.body;
+        let allRoles = [];
+        await Promise.all(
+            roles?.map(async (role) => {
+                const roleInfo = await Role.findById(role);
+                if (roleInfo != undefined && roleInfo != null && roleInfo) {
+                    allRoles.push(roleInfo);
+                }
+            })
+        )
+        return res.status(200).json({ message: "Ok", roles: allRoles });
+
+    } catch (error) {
+        console.log("error in getRoles controller", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+}
 
 module.exports = {
     newRole,
     deleteRole,
-    updateRole
+    updateRole,
+    getRoles
 }
