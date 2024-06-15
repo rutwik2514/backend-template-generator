@@ -14,6 +14,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: [true, "Must provide password"],
         minlength: [6, "Length of password should be atleast 6 characters."]
-    }
+    },
+    // projects:[{
+    //     type : mongoose.Types.ObjectId
+    // }]
 })
+
 module.exports = mongoose.model("Profile", schema);
