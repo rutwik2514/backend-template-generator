@@ -18,7 +18,7 @@ const schema = new mongoose.Schema({
         type:String
     }],
     schemas:[{
-        id: mongoose.Types.ObjectId,
+        type:mongoose.Types.ObjectId,
     }]
 
 })
