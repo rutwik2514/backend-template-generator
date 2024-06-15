@@ -1,5 +1,6 @@
 const express = require("express");
 const Project = require("../models/project")
+const { ObjectId } = require('mongodb');
 
 const newProject = async (req, res) => {
     try {
@@ -167,7 +168,7 @@ const deletePermission = async (req, res) => {
 const getAllPermisisons = async (req, res) => {
 
     try {
-        const { projectId} = req.params;
+        const { projectId } = req.params;
         console.log("project id is", projectId);
         if (projectId == null || projectId == undefined || !projectId) {
             return res.status(401).json({ message: "need project id" })
@@ -177,15 +178,79 @@ const getAllPermisisons = async (req, res) => {
         if (!project || project == null || project == undefined) {
             return res.status(401).json({ message: "Project not found" })
         }
-    
+
         return res.status(200).json({ message: "OK", permissions: project.permissions })
     } catch (error) {
         console.log("error occured in getAllPermisisons controller", error);
-        
+
         return res.status(500).json({ message: "Something went wrong" })
-        
+
     }
 
+}
+
+const addRole = async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const { role, isRestricted,name } = req.body;
+        if (!role || role == undefined || role == null) {
+            return res.status(500).json({ message: "Need role" })
+        }
+        const project = await Project.findById(projectId);
+        if (!project || project == undefined || project == null) {
+            return res.status(500).json({ message: "Project not found" })
+        }
+        if(isRestricted){
+            project.restrictedRoles.push(name);
+        }
+        project.roles.push(role);
+        await project.save();
+        return res.status(200).json({mesage:"Role added Succesffuly"})
+
+    } catch (error) {
+        console.log("Error occured in add role controller");
+        return res.status(500).json({ message: "Something went wrong" })
+
+    }
+}
+
+const deleteRole = async(req,res) => {
+    try {
+        const {projectId} = req.params;
+        const {role,name} = req.body;
+        if (!role || role == undefined || role == null) {
+            return res.status(500).json({ message: "Need role" })
+        }
+        const project = await Project.findById(projectId);
+        if (!project || project == undefined || project == null) {
+            return res.status(500).json({ message: "Project not found" })
+        }
+        let tempRestrictedRoles = [];
+        await Promise.all(
+            project?.restrictedRoles?.map(async (role) => {
+                if (role !== name) {
+                    tempRestrictedRoles.push(role);
+                }
+            })
+            );
+        project.restrictedRoles = tempRestrictedRoles;
+    
+        let tempRoles = [];
+        await Promise.all(
+            project?.restrictedRoles?.map(async (role) => {
+                if(!role.equals(new ObjectId(role))){
+                    tempRoles.push(role);
+                }
+            })
+            );
+        project.roles=tempRoles;
+        await project.save();
+        return res.status(200).json({message:"Role Deleted Successfully"});
+
+    } catch (error) {
+        console.log("Error occured in add role controller");
+        return res.status(500).json({message:"Something went wrong"});
+    }
 }
 
 
@@ -200,5 +265,7 @@ module.exports =
     getProjectInfo,
     addPermission,
     deletePermission,
-    getAllPermisisons
+    getAllPermisisons,
+    addRole,
+    deleteRole
 }
