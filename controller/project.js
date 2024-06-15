@@ -208,7 +208,7 @@ const addRole = async (req, res) => {
         return res.status(200).json({mesage:"Role added Succesffuly"})
 
     } catch (error) {
-        console.log("Error occured in add role controller");
+        console.log("Error occured in add role controller", error);
         return res.status(500).json({ message: "Something went wrong" })
 
     }
@@ -225,6 +225,7 @@ const deleteRole = async(req,res) => {
         if (!project || project == undefined || project == null) {
             return res.status(500).json({ message: "Project not found" })
         }
+
         let tempRestrictedRoles = [];
         await Promise.all(
             project?.restrictedRoles?.map(async (role) => {
@@ -237,12 +238,14 @@ const deleteRole = async(req,res) => {
     
         let tempRoles = [];
         await Promise.all(
-            project?.restrictedRoles?.map(async (role) => {
-                if(!role.equals(new ObjectId(role))){
-                    tempRoles.push(role);
+            project?.roles?.map(async (roleId) => {
+                if(!roleId.equals(new ObjectId(role))){
+                    console.log("pushing roles", roleId, role);
+                    tempRoles.push(roleId);
                 }
             })
             );
+        // console.log("temproles are");
         project.roles=tempRoles;
         await project.save();
         return res.status(200).json({message:"Role Deleted Successfully"});
