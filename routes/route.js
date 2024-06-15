@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {register,login} = require("../controllers/auth");
 
-router.post("/auth/register",register);
-router.post("/auth/login",login);
+const {checkAuthorizationHeaders} = require("../middlewares/authenticate");
+const {newRole, deleteRole, updateRole } = require("../controllers/role");
 
-module.exports = router;
+router.post("/new", checkAuthorizationHeaders, newRole)
+router.delete("/deleteRole",checkAuthorizationHeaders,deleteRole)
+router.patch("/update",checkAuthorizationHeaders,updateRole)
+
+module.exports=router

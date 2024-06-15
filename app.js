@@ -1,20 +1,20 @@
-const express = require("express");
-const app = express();
-const dotenv = require("dotenv");
+require('dotenv').config()
+
+const express = require('express')
+const app = express()
 const cors = require("cors");
-const connect = require("./connect");
+const  connect  = require('./connect');
 const routes = require("./routes/route");
-dotenv.config();
+
+
+const PORT = process.env.PORT || 8003
 
 connect(process.env.MONGO_URI);
 
-// Using middlewares
-app.use(express.json());
-app.use(cors({ origin:'http://localhost:3000', credentials: true }));
+app.use(express.json())
+app.use(cors())
 app.use("/api/v1", routes);
 
-//Starting server
-const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`Server running at port ${PORT}.`);
-});
+    console.log(`Roles server is running on ${PORT}`);
+})
