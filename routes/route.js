@@ -1,8 +1,11 @@
 const express = require("express");
+const { checkAuthorizationHeaders } = require("../middlewares/authenticate");
+const { createSchema, deleteSchema, updateSchema, getSchemas } = require("../controller/schema");
 const router = express.Router();
-const {register,login} = require("../controllers/auth");
 
-router.post("/auth/register",register);
-router.post("/auth/login",login);
+router.post("/new/:projectId", checkAuthorizationHeaders,createSchema);
+router.delete("/delete/:projectId/:schemaId", checkAuthorizationHeaders,deleteSchema);
+router.patch("/update/:schemaId",checkAuthorizationHeaders,updateSchema)
+router.post("/getSchemas", checkAuthorizationHeaders,getSchemas)
 
-module.exports = router;
+module.exports =router;
