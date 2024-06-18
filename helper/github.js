@@ -6,7 +6,7 @@ const REPO_NAME = 'TESTING_AUTOMATIC_REPO_21';
 const UPLOAD_FOLDER = path.resolve(__dirname, '../downloads');
 
 const octokit = new Octokit({
-  auth: GITHUB_TOKEN,
+  auth: process.env.GITHUB_TOKEN,
 });
 
 const createRepo = async (repoName) => {
