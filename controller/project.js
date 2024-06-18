@@ -18,7 +18,7 @@ const generatePackageJson = require("../download_scripts/packageJson_creation");
 const { MakeRepository } = require("../helper/github");
 const { exec } = require('child_process');
 const { promisify } = require('util');
-const { Test } = require("../Downloads/test");
+// const { Test } = require("../Downloads/test");
 const execAsync = promisify(exec);
 // const shFile = require("./")
 const newProject = async (req, res) => {
@@ -407,7 +407,6 @@ const downloadProject = async (req, res) => {
         await generateApp();
         await generateGitIgnore();
         await generatePackageJson(project.name);
-        await Test();
         const response = await MakeRepository();
         try {
             // const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
@@ -416,8 +415,8 @@ const downloadProject = async (req, res) => {
                 `git add .`,
                 'git commit -m "Initial commit"',
                 'git branch -M main',
-                `git remote add origin https://github.com/rutwik2514/TESTING_PREET_28.git`, // Adjust repository URL
-                'git push -u origin main', // Adjust branch name if needed
+                `git remote add origin https://github.com/rutwik2514/TESTING_PREET_30.git`,
+                'git push -u origin main',
             ];
     
             for (const command of gitCommands) {
@@ -433,6 +432,7 @@ const downloadProject = async (req, res) => {
             return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
             // return false;
         }
+            // return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
     
 
     } catch (error) {
