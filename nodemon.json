@@ -1,0 +1,16 @@
+{
+    "ignore": [
+      "downloads/*",
+      "schemas/*",
+      "controllers/*",
+      "routes/*",
+      "permissions/*",
+      "profiles/*",
+      "middlewares/*",
+      ".env",
+      "connect/*",
+      "app/*",
+      ".gitignore",
+      "package.json"
+    ]
+  }

@@ -2,10 +2,13 @@ const { Octokit } = require('@octokit/rest');
 const fs = require('fs-extra');
 const path = require('path');
 const dotenv = require("dotenv");
+
+
 dotenv.config();
 
-const REPO_NAME = 'TESTING_PREET_1';
+const REPO_NAME = 'TESTING_PREET_28';
 const UPLOAD_FOLDER = path.resolve(__dirname, '../downloads');
+// const GITHUB_TOKEN = "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"
 console.log("token is", process.env.GITHUB_TOKEN);
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -14,7 +17,7 @@ const octokit = new Octokit({
 const createRepo = async (repoName) => {
   const { data } = await octokit.repos.createForAuthenticatedUser({
     name: repoName,
-    private: false,
+    private: true,
   });
   return data;
 };
@@ -49,10 +52,10 @@ const MakeRepository = async () => {
   try {
     const repoData = await createRepo(REPO_NAME);
     console.log('Repository created:', repoData);
-    const owner = repoData.owner.login;
-    const repo = repoData.name;
-    await uploadFolder(owner, repo, UPLOAD_FOLDER);
-    console.log('Project uploaded successfully');
+    // const owner = repoData.owner.login;
+    // const repo = repoData.name;
+    // await uploadFolder(owner, repo, UPLOAD_FOLDER);
+    // console.log('Project uploaded successfully');
     return repoData.html_url
   } catch (error) {
     console.error('Error:', error);
