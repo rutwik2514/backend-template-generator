@@ -407,12 +407,10 @@ const downloadProject = async (req, res) => {
         await generateGitIgnore();
         await generatePackageJson(project.name);
         // const response = await MakeRepository();
-        
         try {
-            const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads/controllers'
+            const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
             const gitCommands = [
-                `cd ..`,
-                `cd Downloads`,
+                `cd ${projectDirectory}`,
                 'git init',
                 `git add .`,
                 'git commit -m "Initial commit"',
