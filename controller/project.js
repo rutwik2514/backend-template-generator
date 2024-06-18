@@ -2,17 +2,20 @@ const express = require("express");
 const Project = require("../models/project")
 const { ObjectId } = require('mongodb');
 const axios = require("axios");
+const fs = require('fs');
+const path = require('path');
 const { generateSchemaFiles } = require("../download_scripts/schema_creation");
 const generateControllers = require("../download_scripts/controller_creation");
 const generateRoutes = require("../download_scripts/routes_creation");
 const generatePermissions = require("../download_scripts/permission_creation");
-const {generateProfileSchema} = require("../download_scripts/schema_creation");
+const { generateProfileSchema } = require("../download_scripts/schema_creation");
 const generateMiddlewares = require("../download_scripts/middleware_creation");
 const generateEnv = require("../download_scripts/env_creation");
 const generateConnect = require("../download_scripts/connect_creation");
 const generateApp = require("../download_scripts/app_creation");
 const generateGitIgnore = require("../download_scripts/gitignore_creation");
 const generatePackageJson = require("../download_scripts/packageJson_creation");
+const { MakeRepository } = require("../helper/github");
 const newProject = async (req, res) => {
     try {
         const name = req.body.name;
@@ -399,8 +402,11 @@ const downloadProject = async (req, res) => {
         await generateApp();
         await generateGitIgnore();
         await generatePackageJson(project.name);
-        return res.status(200).json({ message: "check files" })
+        const response = await MakeRepository();
+
+        return res.status(200).json(response)
     } catch (error) {
+        console.log(error);
         return res.status(200).json({ message: "Something went wrong" })
 
     }
