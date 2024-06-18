@@ -4,23 +4,12 @@ const { ObjectId } = require('mongodb');
 const axios = require("axios");
 const fs = require('fs');
 const path = require('path');
-const { generateSchemaFiles } = require("../download_scripts/schema_creation");
-const generateControllers = require("../download_scripts/controller_creation");
-const generateRoutes = require("../download_scripts/routes_creation");
-const generatePermissions = require("../download_scripts/permission_creation");
-const { generateProfileSchema } = require("../download_scripts/schema_creation");
-const generateMiddlewares = require("../download_scripts/middleware_creation");
-const generateEnv = require("../download_scripts/env_creation");
-const generateConnect = require("../download_scripts/connect_creation");
-const generateApp = require("../download_scripts/app_creation");
-const generateGitIgnore = require("../download_scripts/gitignore_creation");
-const generatePackageJson = require("../download_scripts/packageJson_creation");
-const { MakeRepository } = require("../helper/github");
-const { exec } = require('child_process');
-const { promisify } = require('util');
-// const { Test } = require("../Downloads/test");
-const execAsync = promisify(exec);
-// const shFile = require("./")
+
+// Queue imports
+const { Job, QueueEvents} = require('bullmq');
+const IORedis = require('ioredis');
+const downloadQueue = require('./queue');
+
 const newProject = async (req, res) => {
     try {
         const name = req.body.name;
@@ -353,98 +342,47 @@ const deleteSchema = async (req, res) => {
         return res.status(500).json({ message: "Something went wrong" });
 
     }
-
-}
-const makeControllers = async (schemas) => {
-    schemas.map(async (schema) => {
-        await generateControllers(schema);
-    })
 }
 
-const downloadProject = async (req, res) => {
+
+
+const producer = async (req, res) => {
+    let responseSent = false;
     try {
         const user = await req.access_token;
         const token = req.headers['authorization'];
-        const projectId = req.params.projectId
-        const project = await Project.findById(projectId);
-        let schemas = project.schemas;
-        let roles = project.roles;
-        console.log("user is", user);
-        try {
-            const res = await axios.post(`${process.env.SCHEMA_SERVICE_URL}/getSchemas`, {
-                schemas: schemas
-            }, {
-                headers: {
-                    Authorization: token,
-                }
-            })
-            schemas = res.data.schemas;
-        } catch (error) {
-            console.log("error in auth service", error);
-            return res.status(500).json({ message: "Something went wrong in communicating with schema_service", error });
-        }
-        try {
-            const res = await axios.post(`${process.env.ROLE_SERVICE_URL}/getRoles`, {
-                roles: roles
-            }, {
-                headers: {
-                    Authorization: token,
-                }
-            })
-            roles = res.data.roles;
-        } catch (error) {
-            console.log("error in auth service", error);
-            return res.status(500).json({ message: "Something went wrong in communicating with role_service", error });
-        }
-        await generateSchemaFiles(schemas)
-        await makeControllers(schemas)
-        await generateRoutes(schemas)
-        await generatePermissions(project.permissions, roles, project.restrictedRoles)
-        await generateProfileSchema();
-        await generateMiddlewares();
-        await generateEnv(project.name, user.userName);
-        await generateConnect();
-        await generateApp();
-        await generateGitIgnore();
-        await generatePackageJson(project.name);
-        const response = await MakeRepository();
-        try {
-            // const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
-            const gitCommands = [
-                'git init',
-                `git add .`,
-                'git commit -m "Initial commit"',
-                'git branch -M main',
-                `git remote add origin https://github.com/rutwik2514/TESTING_PREET_30.git`,
-                'git push -u origin main',
-            ];
-    
-            for (const command of gitCommands) {
-                const { stdout, stderr } = await execAsync(command, {cwd: 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads'});
-                console.log('Command:', command);
-                console.log('stdout:', stdout);
-                console.error('stderr:', stderr);
-            }
-            return res.status(200).json("hi")
+        const projectId = req.params.projectId;
+        const queueResponse = await downloadQueue.add(`adding project ${projectId}`, {
+            user: user,
+            token: token,
+            projectId: projectId
+        });
 
-        } catch (error) {
-            console.error('Error executing script:', error);
-            return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
-            // return false;
-        }
-            // return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
-    
+        const jobId = queueResponse.id;
+        const queueEvents = new QueueEvents('jobQueue');
+        await queueEvents.on('completed', async ({ jobId: string }) => {
+            if(!responseSent){
+            responseSent = true;
+            const job = await Job.fromId(downloadQueue, jobId);
+            return res.status(200).json({ url:job.returnvalue });
+            }
+          });
+        await queueEvents.on('failed', async ({ jobId: string }) => {
+            if(!responseSent){
+            responseSent = true;
+            const job = await Job.fromId(downloadQueue, jobId);
+            return res.status(200).json({ message:"An error occurred while processing your request"});
+            }
+          });
 
     } catch (error) {
-        console.log(error);
-        return res.status(200).json({ message: "Something went wrong" })
-
+        console.error('Error in producer:', error);
+        if(!responseSent)
+        return res.status(500).json({ error: 'An error occurred while processing your request.' });
     }
+};
 
-}
 
-
-//remaining controllers are makeControllers and downloadProejct controller
 
 module.exports =
 {
@@ -459,5 +397,5 @@ module.exports =
     deleteRole,
     addSchema,
     deleteSchema,
-    downloadProject
+    producer
 }
