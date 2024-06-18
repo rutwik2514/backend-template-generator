@@ -2,7 +2,7 @@ const { Octokit } = require('@octokit/rest');
 const fs = require('fs-extra');
 const path = require('path');
 
-const REPO_NAME = 'TESTING_AUTOMATIC_REPO_21';
+const REPO_NAME = 'TESTING_AUTOMATIC_REPO_22';
 const UPLOAD_FOLDER = path.resolve(__dirname, '../downloads');
 
 const octokit = new Octokit({
