@@ -411,6 +411,8 @@ const downloadProject = async (req, res) => {
             // const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
             const gitCommands = [
                 `dir`,
+                `cd Downloads`,
+                `dir`,
                 'git init',
                 `git add .`,
                 'git commit -m "Initial commit"',
