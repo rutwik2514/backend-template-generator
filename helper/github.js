@@ -17,7 +17,7 @@ const octokit = new Octokit({
 const createRepo = async (repoName) => {
   const { data } = await octokit.repos.createForAuthenticatedUser({
     name: repoName,
-    private: false,
+    private: true,
   });
   return data;
 };

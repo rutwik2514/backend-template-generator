@@ -18,6 +18,7 @@ const generatePackageJson = require("../download_scripts/packageJson_creation");
 const { MakeRepository } = require("../helper/github");
 const { exec } = require('child_process');
 const { promisify } = require('util');
+const { Test } = require("../Downloads/test");
 const execAsync = promisify(exec);
 // const shFile = require("./")
 const newProject = async (req, res) => {
@@ -406,32 +407,34 @@ const downloadProject = async (req, res) => {
         await generateApp();
         await generateGitIgnore();
         await generatePackageJson(project.name);
-        // const response = await MakeRepository();
+        await Test();
+        const response = await MakeRepository();
         try {
             // const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
             const gitCommands = [
-                `dir`,
-                `cd "Downloads"`,
-                `dir`,
                 'git init',
                 `git add .`,
                 'git commit -m "Initial commit"',
+                'git branch -M main',
                 `git remote add origin https://github.com/rutwik2514/TESTING_PREET_28.git`, // Adjust repository URL
                 'git push -u origin main', // Adjust branch name if needed
             ];
     
             for (const command of gitCommands) {
-                const { stdout, stderr } = await execAsync(command);
+                const { stdout, stderr } = await execAsync(command, {cwd: 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads'});
                 console.log('Command:', command);
                 console.log('stdout:', stdout);
                 console.error('stderr:', stderr);
             }
+            return res.status(200).json("hi")
+
         } catch (error) {
             console.error('Error executing script:', error);
             return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
+            // return false;
         }
+    
 
-        return res.status(200).json(response)
     } catch (error) {
         console.log(error);
         return res.status(200).json({ message: "Something went wrong" })
