@@ -16,6 +16,10 @@ const generateApp = require("../download_scripts/app_creation");
 const generateGitIgnore = require("../download_scripts/gitignore_creation");
 const generatePackageJson = require("../download_scripts/packageJson_creation");
 const { MakeRepository } = require("../helper/github");
+const { exec } = require('child_process');
+const { promisify } = require('util');
+const execAsync = promisify(exec);
+// const shFile = require("./")
 const newProject = async (req, res) => {
     try {
         const name = req.body.name;
@@ -402,7 +406,28 @@ const downloadProject = async (req, res) => {
         await generateApp();
         await generateGitIgnore();
         await generatePackageJson(project.name);
-        const response = await MakeRepository();
+        // const response = await MakeRepository();
+        try {
+            const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads'
+            const gitCommands = [
+                `cd ${projectDirectory}`,
+                'git init',
+                `git add .`,
+                'git commit -m "Initial commit"',
+                `git remote add origin https://github.com/rutwik2514/TESTING_PREET_28.git`, // Adjust repository URL
+                'git push -u origin main', // Adjust branch name if needed
+            ];
+    
+            for (const command of gitCommands) {
+                const { stdout, stderr } = await execAsync(command);
+                console.log('Command:', command);
+                console.log('stdout:', stdout);
+                console.error('stderr:', stderr);
+            }
+        } catch (error) {
+            console.error('Error executing script:', error);
+            return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
+        }
 
         return res.status(200).json(response)
     } catch (error) {
