@@ -1,10 +1,12 @@
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs-extra');
 const path = require('path');
+const dotenv = require("dotenv");
+dotenv.config();
 
-const REPO_NAME = 'TESTING_AUTOMATIC_REPO_22';
+const REPO_NAME = 'TESTING_PREET_1';
 const UPLOAD_FOLDER = path.resolve(__dirname, '../downloads');
-
+console.log("token is", process.env.GITHUB_TOKEN);
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
