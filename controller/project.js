@@ -408,7 +408,7 @@ const downloadProject = async (req, res) => {
         await generatePackageJson(project.name);
         // const response = await MakeRepository();
         try {
-            const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads'
+            const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads/controllers'
             const gitCommands = [
                 `cd ${projectDirectory}`,
                 'git init',
