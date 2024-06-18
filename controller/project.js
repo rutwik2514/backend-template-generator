@@ -15,12 +15,16 @@ const generateConnect = require("../download_scripts/connect_creation");
 const generateApp = require("../download_scripts/app_creation");
 const generateGitIgnore = require("../download_scripts/gitignore_creation");
 const generatePackageJson = require("../download_scripts/packageJson_creation");
-const { MakeRepository } = require("../helper/github");
+const { MakeRepository, REPO_NAME } = require("../helper/github");
 const { exec } = require('child_process');
 const { promisify } = require('util');
-const { Test } = require("../Downloads/test");
 const execAsync = promisify(exec);
-// const shFile = require("./")
+
+// Queue imports
+const { Worker } = require('bullmq');
+const IORedis = require('ioredis');
+const downloadQueue = require('./queue');
+
 const newProject = async (req, res) => {
     try {
         const name = req.body.name;
@@ -353,7 +357,6 @@ const deleteSchema = async (req, res) => {
         return res.status(500).json({ message: "Something went wrong" });
 
     }
-
 }
 const makeControllers = async (schemas) => {
     schemas.map(async (schema) => {
@@ -361,11 +364,13 @@ const makeControllers = async (schemas) => {
     })
 }
 
-const downloadProject = async (req, res) => {
+const connection = new IORedis({
+    maxRetriesPerRequest: null
+});
+
+const worker = new Worker("jobQueue", async (job) => {
+    const { user, token, projectId } = job.data;
     try {
-        const user = await req.access_token;
-        const token = req.headers['authorization'];
-        const projectId = req.params.projectId
         const project = await Project.findById(projectId);
         let schemas = project.schemas;
         let roles = project.roles;
@@ -407,41 +412,78 @@ const downloadProject = async (req, res) => {
         await generateApp();
         await generateGitIgnore();
         await generatePackageJson(project.name);
-        await Test();
         const response = await MakeRepository();
+        const exactPath = path.join(process.cwd(), 'Downloads');
         try {
-            // const projectDirectory = 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/role_services'
             const gitCommands = [
                 'git init',
                 `git add .`,
                 'git commit -m "Initial commit"',
                 'git branch -M main',
-                `git remote add origin https://github.com/rutwik2514/TESTING_PREET_28.git`, // Adjust repository URL
-                'git push -u origin main', // Adjust branch name if needed
+                `git remote add origin https://github.com/preetkhatri/${REPO_NAME}.git`,
+                'git push -u origin main',
             ];
-    
+
             for (const command of gitCommands) {
-                const { stdout, stderr } = await execAsync(command, {cwd: 'C:/Users/Rutwik/Desktop/New folder/Dev/Backend-template-generator/Project_Service/Downloads'});
+                const { stdout, stderr } = await execAsync(command, { cwd: exactPath });
                 console.log('Command:', command);
                 console.log('stdout:', stdout);
                 console.error('stderr:', stderr);
             }
-            return res.status(200).json("hi")
+            // return res.status(200).json(response)
 
         } catch (error) {
             console.error('Error executing script:', error);
-            return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
-            // return false;
+            // return res.status(500).json({ message: "Error executing push-to-github.sh script", error });
+            return false;
         }
-    
+
 
     } catch (error) {
         console.log(error);
-        return res.status(200).json({ message: "Something went wrong" })
+        // return res.status(200).json({ message: "Something went wrong" })
+        return false;
 
     }
 
-}
+}, { connection });
+
+const producer = async (req, res) => {
+    try {
+        const user = await req.access_token; // Assuming req.access_token is a promise
+        const token = req.headers['authorization'];
+        const projectId = req.params.projectId;
+
+        // Add the job to the queue
+        const queueResponse = await downloadQueue.add(`adding project ${projectId}`, {
+            user: user,
+            token: token,
+            projectId: projectId
+        });
+
+        const jobId = queueResponse.id;
+
+        // Listen for the job completion
+        downloadQueue.on('completed', async (job, result) => {
+            if (job.id === jobId) {
+                const url = result.url;
+                return res.status(200).json({ url: url });
+            }
+        });
+
+        // Listen for the job failure
+        downloadQueue.on('failed', (job, err) => {
+            if (job.id === jobId) {
+                return res.status(500).json({ error: 'An error occurred while processing your request.' });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error in producer:', error);
+        return res.status(500).json({ error: 'An error occurred while processing your request.' });
+    }
+};
+
 
 
 //remaining controllers are makeControllers and downloadProejct controller
@@ -459,5 +501,5 @@ module.exports =
     deleteRole,
     addSchema,
     deleteSchema,
-    downloadProject
+    producer
 }
