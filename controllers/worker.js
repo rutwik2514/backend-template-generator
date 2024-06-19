@@ -99,7 +99,7 @@ const worker = new Worker("jobQueue", async (job) => {
                 `git add .`,
                 'git commit -m "Initial commit"',
                 'git branch -M main',
-                `git remote add origin https://github.com/rutwik2514/${REPO_NAME}.git`,
+                `git remote add origin https://github.com/preetkhatri/${REPO_NAME}.git`,
                 'git push -u origin main',
             ];
 

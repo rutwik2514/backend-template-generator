@@ -4,7 +4,7 @@ const path = require('path');
 const dotenv = require("dotenv");
 dotenv.config();
 
-const REPO_NAME = 'WORK_FINAL_TEST';
+const REPO_NAME = 'FINAL_TEST_YOU';
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
