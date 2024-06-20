@@ -18,7 +18,7 @@ app.use(cors({ origin:'http://localhost:8004', credentials: true }));
 app.use("/api/v1", routes);
 // Check()
 
-
+const {worker} = require("./controller/worker")
 //Starting server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
