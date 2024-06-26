@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  role-service:
+    build: .
+    ports:
+      - "8003:8003"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
