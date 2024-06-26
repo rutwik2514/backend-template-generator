@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  auth_service:
+    build: .
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
