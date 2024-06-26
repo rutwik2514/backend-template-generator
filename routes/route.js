@@ -1,6 +1,7 @@
 const express = require("express");
 const { checkAuthorizationHeaders } = require("../middlewares/authenticate");
 const { newProject, deleteProject, getAllProjects, getProjectInfo, addPermission, deletePermission, getAllPermisisons, addRole, deleteRole, addSchema, deleteSchema, downloadProject, producer } = require("../controller/project");
+const { queueProducer } = require("../controller/errorQueue");
 const router = express.Router();
 
 

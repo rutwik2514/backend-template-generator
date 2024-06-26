@@ -6,9 +6,14 @@ const fs = require('fs');
 const path = require('path');
 
 // Queue imports
-const { Job, QueueEvents} = require('bullmq');
-const IORedis = require('ioredis');
-const downloadQueue = require('./queue');
+// const { Job, QueueEvents} = require('bullmq');
+// const IORedis = require('ioredis');
+const { jobQueue } = require('./errorQueue');
+// const jobQueue = require("./queue")
+const Queue = require("bull");
+const dotenv = require("dotenv");
+dotenv.config();
+const { burgerQueue } = require("../app")
 
 const newProject = async (req, res) => {
     try {
@@ -346,41 +351,66 @@ const deleteSchema = async (req, res) => {
 
 
 
+
 const producer = async (req, res) => {
-    let responseSent = false;
     try {
+        const { REDIS_HOST, REDIS_PORT } = process.env;
+        if (!REDIS_HOST || !REDIS_PORT) {
+            console.error('Redis host and port must be set');
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        const redisOptions = {
+            redis: { host: REDIS_HOST, port: REDIS_PORT }
+        };
+        console.log('Initializing jobQueue with options:', redisOptions);
+        const jobQueue = new Queue('jobQueue', redisOptions);
+        const errorQueue = new Queue('errorQueue', redisOptions);
+
+        // Set up global event listeners
+        jobQueue.on('global:completed', (completedJob, result) => {
+            const parsed = JSON.parse(result);
+            const githubUrl = parsed.githubUrl;
+            return res.status(200).json({ githubUrl});
+        });
+
+        jobQueue.on('global:failed', async (failedJob, err) => {
+            console.log("Job failed:", failedJob.id, "with error:", err);
+            console.log("Please wait, something went wrong, retrying in 4 seconds...");
+            setTimeout(async () => {
+                const user = await req.access_token;
+                const token = req.headers['authorization'];
+                const projectId = req.params.projectId;
+                const errorJob = await errorQueue.add({ user, token, projectId });
+
+                errorQueue.on('global:completed', (completedErrorJob, errorResult) => {
+                    console.log(`Error recovery job completed: ${completedErrorJob.id} with result`, errorResult);
+                    return res.status(200).json({ githubUrl: errorResult.githubUrl });
+                });
+
+                errorQueue.on('global:failed', (failedErrorJob, errorErr) => {
+                    console.log(`Error recovery job failed: ${failedErrorJob.id} with error`, errorErr);
+                    return res.status(500).json({ message: "Something went wrong during error recovery" });
+                });
+            }, 4000);
+        });
+
+        console.log('Adding job to the queue');
         const user = await req.access_token;
         const token = req.headers['authorization'];
         const projectId = req.params.projectId;
-        const queueResponse = await downloadQueue.add(`adding project ${projectId}`, {
-            user: user,
-            token: token,
-            projectId: projectId
-        });
-
-        const jobId = queueResponse.id;
-        const queueEvents = new QueueEvents('jobQueue');
-        await queueEvents.on('completed', async ({ jobId: string }) => {
-            if(!responseSent){
-            responseSent = true;
-            const job = await Job.fromId(downloadQueue, jobId);
-            return res.status(200).json({ url:job.returnvalue });
-            }
-          });
-        await queueEvents.on('failed', async ({ jobId: string }) => {
-            if(!responseSent){
-            responseSent = true;
-            const job = await Job.fromId(downloadQueue, jobId);
-            return res.status(200).json({ message:"An error occurred while processing your request"});
-            }
-          });
+        await jobQueue.add({ user, token, projectId });
 
     } catch (error) {
         console.error('Error in producer:', error);
-        if(!responseSent)
         return res.status(500).json({ error: 'An error occurred while processing your request.' });
     }
 };
+
+
+
+
+
 
 
 
