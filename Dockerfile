@@ -6,8 +6,6 @@ FROM node:current-alpine3.20
 WORKDIR /usr/src/app
 
 
-
-
 # Copy the rest of the application code to the working directory
 COPY . .
 
