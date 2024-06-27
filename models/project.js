@@ -19,7 +19,13 @@ const schema = new mongoose.Schema({
     }],
     schemas:[{
         type:mongoose.Types.ObjectId,
-    }]
+    }],
+    githubUrl : {
+        type:String
+    },
+    repoName:{
+        type:String
+    }
 
 })
 module.exports = mongoose.model("Project", schema);

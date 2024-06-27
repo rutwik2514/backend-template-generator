@@ -83,7 +83,19 @@ const processJob = async (job, done) => {
         await generateGitIgnore();
         await generatePackageJson(project.name);
 
-        const { repoName, githubUrl } = await MakeRepository();
+        let repoName = "";
+        let githubUrl = "";
+        let alreadyCreated = false;
+        if(project.githubUrl== "" && project.repoName == ""){
+        const { createdRepoName, createdGithubUrl } = await MakeRepository();
+            repoName=createdRepoName
+            githubUrl = createdGithubUrl;
+        }
+        else{
+            alreadyCreated=true;
+            repoName=project.repoName;
+            githubUrl=project.githubUrl;
+        }
         const exactPath = path.join(process.cwd(), 'Downloads');
         console.log("Exact path:", exactPath);
         const url = `https://BackendBuddy07:${process.env.GITHUB_TOKEN}@github.com/BackendBuddy07/${repoName}.git`;
@@ -93,10 +105,10 @@ const processJob = async (job, done) => {
             const gitCommands = [
                 'git init',
                 'git add .',
-                'git commit -m "Initial commit"',
+                `git commit -m ${alreadyCreated?'"Changes updated"':'"Initial commit"'}`,
                 'git branch -M main',
                 `git remote add origin ${url}`,
-                'git push -u origin main',
+                'git push -u origin main --force',
             ];
 
             for (const command of gitCommands) {
@@ -104,6 +116,23 @@ const processJob = async (job, done) => {
                 console.log('Command:', command);
                 console.log('stdout:', stdout);
                 console.error('stderr:', stderr);
+            }
+            
+            if(!alreadyCreated){
+                try {
+                    project.githubUrl= githubUrl;
+                    project.repoName=repoName;
+                    await project.save();
+                } catch (error) {
+                    if (fs.existsSync(exactPath)) {
+                        console.log(`Directory ${exactPath} exists. Deleting...`);
+                        rimraf.sync(exactPath);
+                        console.log(`Directory ${exactPath} deleted.`);
+                    } else {
+                        console.log(`Directory ${exactPath} does not exist.`);
+                    }
+                    return done(new Error("Error executing git commands"));
+                }
             }
 
             rimraf.sync(exactPath);

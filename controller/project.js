@@ -8,7 +8,6 @@ const path = require('path');
 // Queue imports
 // const { Job, QueueEvents} = require('bullmq');
 // const IORedis = require('ioredis');
-const { jobQueue } = require('./errorQueue');
 // const jobQueue = require("./queue")
 const Queue = require("bull");
 const dotenv = require("dotenv");
@@ -27,7 +26,7 @@ const newProject = async (req, res) => {
 
         const userId = req.access_token.id;
         //adding project to datase
-        const newProject = await Project.create({ userId: userId, name: name, roles: [], permissions: [], restrictedRoles: [], schemas: [] });
+        const newProject = await Project.create({ userId: userId, name: name, roles: [], permissions: [], restrictedRoles: [], schemas: [], githubUrl : "", repoName:""});
 
         //contacting auth_service to add project in user profile
         try {
@@ -352,6 +351,7 @@ const deleteSchema = async (req, res) => {
 
 
 
+
 const producer = async (req, res) => {
     try {
         const { REDIS_HOST, REDIS_PORT } = process.env;
@@ -367,7 +367,6 @@ const producer = async (req, res) => {
         const jobQueue = new Queue('jobQueue', redisOptions);
         const errorQueue = new Queue('errorQueue', redisOptions);
 
-        // Set up global event listeners
         jobQueue.on('global:completed', (completedJob, result) => {
             const parsed = JSON.parse(result);
             const githubUrl = parsed.githubUrl;
@@ -395,7 +394,6 @@ const producer = async (req, res) => {
             }, 4000);
         });
 
-        console.log('Adding job to the queue');
         const user = await req.access_token;
         const token = req.headers['authorization'];
         const projectId = req.params.projectId;

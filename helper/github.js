@@ -34,7 +34,7 @@ const MakeRepository = async () => {
     // REPO_FINAL_NAME=REPO_NAME;
     const repoData = await createRepo(REPO_NAME);
     console.log('Repository created:', repoData);
-    return {repoName:REPO_NAME,githubUrl:repoData.html_url};
+    return {createdRepoName:REPO_NAME,createdGithubUrl:repoData.html_url};
   } catch (error) {
     console.error('Error:', error);
   }
