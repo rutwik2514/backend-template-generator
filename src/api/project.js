@@ -2,7 +2,7 @@ import axiosInstance from "../Utils/Axios";
 
 const fetchProjects = async() => {
     try {
-      const projects = await axiosInstance.get("/project/getProjects");
+      const projects = await axiosInstance.get("/project/getAll");
       console.log("response from fetch project is", projects);
       return {projects: projects?.data?.projects, error:null};
     } catch (error) {
