@@ -1,6 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:current-alpine3.20
 
+# Install Git
+RUN apk update && \
+    apk add --no-cache git
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -10,6 +13,9 @@ WORKDIR /usr/src/app
     
 # Copy the rest of the application code to the working directory
 COPY . .
+
+RUN git config --global user.email "backendbuddy07@gmail.com" && \
+    git config --global user.name "BackendBuddy07"
 
 RUN npm install
 # Expose the port the app runs on
