@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 8003
 connect(process.env.MONGO_URI);
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({ origin:'*', credentials: true }));
+
 app.use("/api/v1", routes);
 
 app.listen(PORT, () => {
