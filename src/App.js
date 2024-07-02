@@ -15,8 +15,7 @@ import PermissionsPage from './Components/Permissions/PermissionsPage';
 import Navbar from './Components/Navbar/Navbar';
 import RolesPage from './Components/Roles/RolesPage';
 import ProjectDashboard from './Components/Project/Project_Dashboard';
-import Schema from './Components/Schema/Schema';
-import SchemaCreate from './Components/Schema/Schema_create';
+import SchemaCreate from './Components/Schema/Index';
 import Layout from './Components/Layout/Layout';
 import Project from './Components/Project/Project';
 
@@ -71,8 +70,8 @@ const AppRoutes = () => {
           <Route exact path='/project/:projectId/permissions' element={<Layout><PermissionsPage /></Layout>} />
           <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>} />
 
-          <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>} />
-          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><SchemaCreate /></Layout>} />
+          <Route exact path='/project/:projectId/schema' element={<Layout><SchemaCreate /></Layout>} />
+          {/* <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><SchemaCreate /></Layout>} /> */}
 
 
         </Routes>

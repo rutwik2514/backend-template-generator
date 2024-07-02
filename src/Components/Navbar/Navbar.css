@@ -3,7 +3,8 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: #f5f3f0;
+    background-color: transparent;
+    z-index: 100;
 }
 
 .navbar-wideScreen {
@@ -30,7 +31,9 @@
     position: fixed;
     transition: 850ms;
     justify-content: center;
-    background-color: #e4e3e2;
+    background-color: #fbf9f9;
+    z-index: 100;
+
 }
 
 .sidebar-menu.active {
@@ -73,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: #e4e3e2;
+    background-color: #fbf9f9;
 }
 
 span {
