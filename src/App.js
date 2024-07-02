@@ -34,7 +34,6 @@ function App() {
 const AppRoutes = () => {
   const location = useLocation();
   const [userData, setUserData] = useState({ user: "" })
-  // const [permissions, setPermissions] = useState([]);
 
   //verifying token in local storage
   const verifyToken = async () => {
@@ -73,7 +72,7 @@ const AppRoutes = () => {
           <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>}/>
           
           <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>}/>
-          <Route exact path='/project/:projectId/schema/create' element={<Layout><Schema_create /></Layout>}/>
+          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><Schema_create /></Layout>}/>
 
 
         </Routes>
