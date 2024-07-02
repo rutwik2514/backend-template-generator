@@ -122,3 +122,7 @@ span {
 img {
     height: 100px;
 }
+
+.logo:hover {
+    cursor: pointer;
+}

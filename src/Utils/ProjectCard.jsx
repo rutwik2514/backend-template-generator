@@ -73,20 +73,17 @@ function ProjectCard({ project, projectId }) {
   };
 
   const handleAddRoles = () => {
-    navigate(`/project/${projectId}/add-roles`);
+    navigate(`/project/${projectId}/roles`);
   };
 
   const handleAddPermissions = () => {
-    navigate(`/project/${projectId}/add-permissions`);
+    navigate(`/project/${projectId}/permissions`);
   };
 
   const handleAddSchema = () => {
-    navigate(`/project/${projectId}/add-schema`);
+    navigate(`/project/${projectId}/schema`);
   };
 
-  const handleClick = () => {
-    navigate(`/project/${projectId}/`);
-  };
 
   useEffect(() => {
     // Add event listener to handle clicks outside options container
@@ -97,12 +94,12 @@ function ProjectCard({ project, projectId }) {
   }, []);
 
   return (
-    <div style={cardStyle} onClick={handleClick}>
+    <div style={cardStyle}>
       <img src={projectImage} alt="Project" style={imageStyle} />
       <h2 style={projectNameStyle}>{project.name}</h2>
       <div ref={optionsRef} style={optionsContainerStyle}>
-        <button style={optionButtonStyle} onClick={handleAddRoles}>Add Roles</button>
         <button style={optionButtonStyle} onClick={handleAddPermissions}>Add Permissions</button>
+        <button style={optionButtonStyle} onClick={handleAddRoles}>Add Roles</button>
         <button style={optionButtonStyle} onClick={handleAddSchema}>Add Schema</button>
       </div>
       {!showOptions && (

@@ -1,4 +1,5 @@
 import './Navbar.css';
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
@@ -43,17 +44,19 @@ function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const navigate = useNavigate();
+
   return (
     <>
       {isWideScreen ? (
         <>
           <nav className="navbar-wideScreen">
-            <div className="logo" style={{ marginLeft: "30px" }}> BackendBuddy</div>
+            <div className="logo" onClick={()=>navigate(`/dashboard`)} style={{ marginLeft: "30px" }}> BackendBuddy</div>
             <ul className="nav-links" style={{ marginRight: "50px" }}>
-              <li><Link href="#">Permissions</Link></li>
-              <li><Link href="#">Roles</Link></li>
-              <li><Link href="#">Project</Link></li>
-              <li><Link href="#">Logout</Link></li>
+              <li><Link >Permissions</Link></li>
+              <li><Link >Roles</Link></li>
+              <li><Link to="/project">Project</Link></li>
+              <li><Link >Logout</Link></li>
             </ul>
           </nav>
         </>

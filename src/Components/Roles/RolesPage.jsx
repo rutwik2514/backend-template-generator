@@ -4,6 +4,14 @@ import { getAllPermission } from '../../api/permissions';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchProjectInfo } from '../../api/project';
 import { addNewRole, deleteRole, updateRole } from '../../api/role';
+import Modal from 'react-modal';
+import roleImage from "../../Assets/jwt.png"
+
+const imageStyle = {
+  width: 'auto',
+  borderRadius: '4px',
+  marginBottom: '10px',
+};
 
 const RolesPage = () => {
   const [roles, setRoles] = useState([]);
@@ -12,6 +20,7 @@ const RolesPage = () => {
   const [permissions, setPermissions] = useState([]);
   const [editRoleName, setEditRoleName] = useState('');
   const { projectId } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddRole = async () => {
     if (newRoleName !== '') {
@@ -25,7 +34,6 @@ const RolesPage = () => {
     }
   };
 
-
   const handleDeleteRole = async (roleIndex) => {
     const res = await deleteRole(roles[roleIndex]._id, projectId);
     if (res.error) {
@@ -38,6 +46,7 @@ const RolesPage = () => {
   const handleSelectRole = (roleIndex) => {
     setSelectedRole(roleIndex);
     setEditRoleName(roles[roleIndex].name);
+    setIsModalOpen(true);
   };
 
   const handlePermissionChange = (roleIndex, permission) => {
@@ -80,16 +89,19 @@ const RolesPage = () => {
       toast.error("something went wrong");
       return;
     }
+    setIsModalOpen(false);
     window.location.reload();
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("roles are", roles);
-  },[roles]);
+  }, [roles]);
 
   useEffect(() => {
     getPermissionsAndRoles();
   }, []);
+
+
 
   return (
     <div style={{ padding: '20px' }}>
@@ -107,59 +119,69 @@ const RolesPage = () => {
         />
         <button onClick={handleAddRole} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Role</button>
       </div>
-      {roles.map((role, roleIndex) => (
-        <div key={roleIndex} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth: "30vw" }}>
-          <h3 style={{ marginBottom: '10px' }}>
-            {selectedRole === roleIndex ? (
-              <input
-                type="text"
-                value={editRoleName}
-                name="roleName"
-                required
-                style={{ padding: '5px', marginRight: '10px' }}
-                onChange={(e) => setEditRoleName(e.target.value)}
-              />
-            ) : (
-              role.name
-            )}
-          </h3>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        {roles.map((role, roleIndex) => (
+          <div key={roleIndex} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', alignItems: 'center', gap: '10px', width: '175px', display: 'flex', flexDirection: 'column',justifyContent: 'center' }}>
+            <img src={roleImage} alt="Role" style={imageStyle} />
+            <div>
+              <h3 style={{ marginBottom: '10px' }}>
+                {role.name}
+              </h3>
+              <button onClick={() => handleSelectRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Edit</button>
+              <button onClick={() => handleDeleteRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          contentLabel="Edit Role"
+          style={{
+            overlay: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+              padding: '20px',
+              borderRadius: '8px',
+              maxWidth: '500px',
+              width: '100%'
+            }
+          }}
+        >
+          <h2>Edit Role</h2>
+          <input
+            type="text"
+            value={editRoleName}
+            name="roleName"
+            required
+            style={{ padding: '5px', marginBottom: '20px', width: '100%' }}
+            onChange={(e) => setEditRoleName(e.target.value)}
+          />
           <ul>
-            {selectedRole === roleIndex && permissions.map((permission, index) => (
+            {permissions.map((permission, index) => (
               <li key={index} style={{ marginBottom: '5px' }}>
                 <input
                   type="checkbox"
-                  checked={role?.permissions?.includes(permission)}
-                  onChange={() => handlePermissionChange(roleIndex, permission)}
-                  style={{ marginRight: '5px' }}
-                />
-                {permission}
-              </li>
-            ))}
-            {selectedRole !== roleIndex && permissions.map((permission, index) => (
-              <li key={index} style={{ marginBottom: '5px' }}>
-                <input
-                  type="checkbox"
-                  disabled
-                  checked={role?.permissions?.includes(permission)}
+                  checked={roles[selectedRole]?.permissions?.includes(permission)}
+                  onChange={() => handlePermissionChange(selectedRole, permission)}
                   style={{ marginRight: '5px' }}
                 />
                 {permission}
               </li>
             ))}
           </ul>
-          {selectedRole === roleIndex ? (
-            <>
-              <button onClick={() => setSelectedRole(null)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Cancel</button>
-              <button onClick={() => handleSave(role._id, roleIndex)} type="submit" style={{ padding: '5px 10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Save</button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => handleSelectRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Edit</button>
-              <button onClick={() => handleDeleteRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
-            </>
-          )}
-        </div>
-      ))}
+          <button onClick={() => setIsModalOpen(false)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Cancel</button>
+          <button onClick={() => handleSave(roles[selectedRole]._id, selectedRole)} type="submit" style={{ padding: '5px 10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Save</button>
+        </Modal>
+      )}
       <ToastContainer
         position="top-center"
         autoClose={3000}
