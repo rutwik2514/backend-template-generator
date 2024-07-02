@@ -19,6 +19,7 @@ import Project_Dashboard from './Components/Project/Project_Dashboard';
 import Schema from './Components/Schema/Schema';
 import Schema_create from './Components/Schema/Schema_create';
 import Footer from './Components/Footer/Footer';
+import Layout from './Components/Layout/Layout';
 
 function App() {
   return (
@@ -62,17 +63,17 @@ const AppRoutes = () => {
     <>
       <AuthContext.Provider value={{ userData, setUserData}} >
         <Routes>
-          <Route exact path="/" element={<Homepage />} />
-          <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route exact path="/register" element={<Register />} />
-          <Route index exact path="/login" element={<Login />} />
-          <Route index exact path="/project/:projectId" element={<Project_Dashboard   />} />
-          <Route exact path="/navbar" element={<Navbar/>}/>
-          <Route exact path='/project/:projectId/permissions' element={<PermissionsPage />}/>
-          <Route exact path='/project/:projectId/roles' element={<RolesPage />}/>
+          <Route exact path="/" element={<Layout><Homepage /></Layout>} />
+          <Route exact path="/dashboard" element={<Layout> <Dashboard /> </Layout>} />
+          <Route exact path="/register" element={<Layout><Register /></Layout>} />
+          <Route index exact path="/login" element={<Layout><Login /></Layout>} />
+          <Route index exact path="/project/:projectId" element={<Layout><Project_Dashboard   /></Layout>} />
+          <Route exact path="/navbar" element={<Layout><Navbar/></Layout>}/>
+          <Route exact path='/project/:projectId/permissions' element={<Layout><PermissionsPage /></Layout>}/>
+          <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>}/>
           
-          <Route exact path='/project/:projectId/schema' element={<Schema />}/>
-          <Route exact path='/project/:projectId/schema/create' element={<Schema_create />}/>
+          <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>}/>
+          <Route exact path='/project/:projectId/schema/create' element={<Layout><Schema_create /></Layout>}/>
 
 
         </Routes>

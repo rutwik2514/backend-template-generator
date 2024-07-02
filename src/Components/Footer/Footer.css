@@ -2,6 +2,7 @@
   background-color: rgb(18, 18, 18);
   color: rgb(160, 160, 160);
   padding: 60px 0;
+  overflow-x: hidden;
 }
 
 .footer a {

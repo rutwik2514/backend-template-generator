@@ -3,12 +3,21 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: pink;
+    background-color: #f5f3f0;
+}
+
+.navbar-wideScreen{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f6f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-icons {
     font-size: 2rem;
-    color: magenta;
+    color: black;
     margin-left: 2rem;
 }
 
@@ -21,7 +30,7 @@
     position: fixed;
     transition: 850ms;
     justify-content: center;
-    background-color: pink;
+    background-color: #e4e3e2;
 }
 
 .sidebar-menu.active {
@@ -51,7 +60,7 @@
 }
 
 .list-items a:hover {
-    background-color: magenta !important;
+    background-color: #e4e3e2 !important;
 }
 
 .sidebar-menu-items {
@@ -64,9 +73,47 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: pink;
+    background-color: #e4e3e2;;
 }
 
 span {
     margin-left: 16px;
 }
+
+
+
+
+
+/* css by rutwik */
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    background: transparent;
+  
+  }
+  
+.nav-links li {
+    margin: 0;
+    background: transparent;
+  
+  }
+  
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    background: transparent;
+  }
+  .nav-links a:hover {
+    text-decoration: none;
+    color: #aba8a8;
+    font-size: 16px;
+    background: transparent;
+  }

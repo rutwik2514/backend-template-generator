@@ -21,7 +21,6 @@ function Dashboard() {
 
   return (
     <div style={dashboardStyle}>
-      <Navbar />
       <div style={greetingStyle}>Hello {userData.user.userName}</div>
       <Project />
       <ToastContainer

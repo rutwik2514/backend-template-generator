@@ -5,8 +5,8 @@ import { FaFacebookSquare, FaInstagram } from "react-icons/fa";
 
 function Footer() {
     return (
-        <div>
-            <footer className="footer">
+        <div style={{maxWidth:"100vw"}}>
+            <footer style={{maxWidth:"100vw"}} className="footer">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-12 text-center">

@@ -12,73 +12,96 @@ function Navbar() {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const isWideScreen = windowWidth > 1000;
 
   const handleClickOutside = (event) => {
     //checks if click is not on sidebar
-    if (sidebar && !document.querySelector('.sidebar-menu').contains(event.target) && !document.querySelector('.sidebar-icons').contains(event.target)) {
+    if (sidebar && !isWideScreen && !document.querySelector('.sidebar-menu').contains(event.target) && !document.querySelector('.sidebar-icons').contains(event.target)) {
       setSidebar(false);
     }
   };
 
   useEffect(() => {
-    if (sidebar) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+    if (!isWideScreen) {
+      if (sidebar && !isWideScreen) {
+        document.addEventListener('mousedown', handleClickOutside);
+      } else if (!isWideScreen) {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
     }
-    
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
     // eslint-disable-next-line
   }, [sidebar]);
 
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
-      <div className='navbar'>
-        <Link to='#' className='sidebar-icons'>
-          <FaBars onClick={showSidebar} />
-        </Link>
-      </div>
-      <nav className={sidebar ? 'sidebar-menu active' : 'sidebar-menu'}>
-        <ul className='sidebar-menu-items' onClick={showSidebar}>
-          <li className='sidebar-toggle'>
-            <Link to='#' className='sidebar-icons'>
-              <IoMdClose />
-            </Link>
-          </li>
-          <li className="list-items">
-            <Link to='/permission'>
-              <MdOutlineDashboard />
-              <span>Permissions</span>
-            </Link>
-          </li>
-          <li className="list-items">
-            <Link to='/newproject'>
-              <MdOutlineDashboard />
-              <span>New Project</span>
-            </Link>
-          </li>
-          <li className="list-items">
-            <Link to='#'>
-              <TfiPencilAlt />
-              <span>New Project</span>
-            </Link>
-          </li>
-          <li className="list-items">
-            <Link to='#'>
-              <IoListSharp />
-              <span>Projects</span>
-            </Link>
-          </li>
-          <li className="list-items">
-            <Link to='#'>
-              <CiLogout />
-              <span>Log Out</span>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      {isWideScreen ? (
+        <>
+          <nav className="navbar-wideScreen">
+            <div className="logo" style={{ marginLeft: "30px" }}> BackendBuddy</div>
+            <ul className="nav-links" style={{ marginRight: "50px" }}>
+              <li><Link href="#">Permissions</Link></li>
+              <li><Link href="#">Roles</Link></li>
+              <li><Link href="#">Project</Link></li>
+              <li><Link href="#">Logout</Link></li>
+            </ul>
+          </nav>
+        </>
+      ) : (
+        <>
+          <div style={{ maxWidth: "100vw" }}>
+            <div className='navbar'>
+              <Link to='#' className='sidebar-icons'>
+                <FaBars onClick={showSidebar} />
+              </Link>
+            </div>
+            <nav className={sidebar ? 'sidebar-menu active' : 'sidebar-menu'}>
+              <ul className='sidebar-menu-items' onClick={showSidebar}>
+                <li className='sidebar-toggle'>
+                  <Link to='#' className='sidebar-icons'>
+                    <IoMdClose style={{ color: "black" }} />
+                  </Link>
+                </li>
+                <li className="list-items">
+                  <Link to='/permission'>
+                    <MdOutlineDashboard style={{ color: "black" }} />
+                    <span style={{ color: "black" }}>Permissions</span>
+                  </Link>
+                </li>
+                <li className="list-items">
+                  <Link to='/newproject'>
+                    <MdOutlineDashboard style={{ color: "black" }} />
+                    <span style={{ color: "black" }}>New Project</span>
+                  </Link>
+                </li>
+                <li className="list-items">
+                  <Link to='#'>
+                    <IoListSharp style={{ color: "black" }} />
+                    <span style={{ color: "black" }}>Projects</span>
+                  </Link>
+                </li>
+                <li className="list-items">
+                  <Link to='#'>
+                    <CiLogout style={{ color: "black" }} />
+                    <span style={{ color: "black" }}>Log Out</span>
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+        </>
+      )}
     </>
   );
 }
