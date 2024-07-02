@@ -11,8 +11,8 @@ require("./controller/worker")
 // const { startWorker } = require('./controller/worker');
 // const { Check } = require("./new");
 
-// const configPath = path.join('.env');
 dotenv.config();
+// const configPath = path.join('.env');
 // const burgerQueue = new Bull("burger");
 // const {jobQueue} = require("./controller/queue")
 

@@ -252,12 +252,14 @@ const deleteRole = async (req, res) => {
         if (!project || project == undefined || project == null) {
             return res.status(500).json({ message: "Project not found" })
         }
+        
+        console.log("roles are", project.roles);
 
         let tempRestrictedRoles = [];
         await Promise.all(
-            project?.restrictedRoles?.map(async (role) => {
-                if (role !== name) {
-                    tempRestrictedRoles.push(role);
+            project?.restrictedRoles?.map(async (newRole) => {
+                if (newRole !== name) {
+                    tempRestrictedRoles.push(newRole);
                 }
             })
         );
@@ -265,9 +267,9 @@ const deleteRole = async (req, res) => {
 
         let tempRoles = [];
         await Promise.all(
-            project?.restrictedRoles?.map(async (role) => {
-                if (!role.equals(new ObjectId(role))) {
-                    tempRoles.push(role);
+            project?.roles?.map(async (newRole) => {
+                if (!newRole.equals(new ObjectId(role))) {
+                    tempRoles.push(newRole);
                 }
             })
         );
