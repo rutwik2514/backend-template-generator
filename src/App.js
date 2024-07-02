@@ -60,19 +60,20 @@ const AppRoutes = () => {
 
   return (
     <>
-      <AuthContext.Provider value={{ userData, setUserData}} >
+      <AuthContext.Provider value={{ userData, setUserData }} >
         <Routes>
           <Route exact path="/" element={<Layout><Homepage /></Layout>} />
           <Route exact path="/dashboard" element={<Layout> <Dashboard /> </Layout>} />
+          <Route exact path="/project" element={<Layout> <Project /> </Layout>} />
           <Route exact path="/register" element={<Layout><Register /></Layout>} />
           <Route index exact path="/login" element={<Layout><Login /></Layout>} />
-          <Route index exact path="/project/:projectId" element={<Layout><Project_Dashboard   /></Layout>} />
-          <Route exact path="/navbar" element={<Layout><Navbar/></Layout>}/>
-          <Route exact path='/project/:projectId/permissions' element={<Layout><PermissionsPage /></Layout>}/>
-          <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>}/>
-          
-          <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>}/>
-          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><Schema_create /></Layout>}/>
+          <Route index exact path="/project/:projectId" element={<Layout><Project_Dashboard /></Layout>} />
+          <Route exact path="/navbar" element={<Layout><Navbar /></Layout>} />
+          <Route exact path='/project/:projectId/permissions' element={<Layout><PermissionsPage /></Layout>} />
+          <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>} />
+
+          <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>} />
+          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><Schema_create /></Layout>} />
 
 
         </Routes>

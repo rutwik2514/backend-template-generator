@@ -19,16 +19,19 @@ const buttonStyle = {
   borderRadius: '4px',
   padding: '10px 20px',
   cursor: 'pointer',
-  margin: '10px 0',
-  width: '300px',
+  marginTop: '20px',
+  marginLeft: '10px',
+  width: '200px',
 };
 
 const inputStyle = {
   padding: '10px',
-  margin: '0 10px 10px 0',
+  marginLeft: '30px',
+  marginTop: '20px',
+  // marginRight: '10px',
   borderRadius: '4px',
   border: '1px solid #ccc',
-  width: '300px',
+  width: '200px',
 };
 
 function Project() {
@@ -37,7 +40,7 @@ function Project() {
   const [projectList, setProjectList] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
 
-  //getting project list 
+  // Getting project list
   const getProjects = async () => {
     const projects = await fetchProjects();
     if (projects.error == null) setProjectList(projects.projects)
@@ -46,7 +49,7 @@ function Project() {
     };
   };
 
-  //adding new project
+  // Adding new project
   const handleNewProject = async () => {
     if (newProjectName === '') {
       toast.error('Must provide project name');
@@ -67,12 +70,8 @@ function Project() {
 
   return (
     <>
-      {/* <button onClick={() => {
-        localStorage.removeItem('token');
-        navigate('/login');
-      }}>Logout</button> */}
-        <input placeholder='new project name' value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} style={inputStyle} />
-        <button onClick={handleNewProject} style={buttonStyle}>Create New project</button>
+      <input placeholder='New project name' value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} style={inputStyle} />
+      <button onClick={handleNewProject} style={buttonStyle}>Create New Project</button>
       <div style={projectListStyle}>
         {projectList && projectList.map(project => (
           <ProjectCard key={project._id} project={project} projectId={project._id} />

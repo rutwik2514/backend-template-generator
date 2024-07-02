@@ -22,7 +22,7 @@ function Dashboard() {
   return (
     <div style={dashboardStyle}>
       <div style={greetingStyle}>Hello {userData.user.userName}</div>
-      <Project />
+      {/* <Project /> */}
       <ToastContainer
         position="top-center"
         autoClose={3000}
