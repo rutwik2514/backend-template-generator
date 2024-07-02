@@ -50,6 +50,7 @@ function Project() {
   const handleNewProject = async () => {
     if (newProjectName === '') {
       toast.error('Must provide project name');
+      return;
     }
     const res = await addNewProject(newProjectName);
     if (res.error !== null) {

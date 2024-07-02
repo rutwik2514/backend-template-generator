@@ -25,6 +25,7 @@ const RolesPage = () => {
     }
   };
 
+
   const handleDeleteRole = async (roleIndex) => {
     const res = await deleteRole(roles[roleIndex]._id, projectId);
     if (res.error) {
@@ -59,6 +60,7 @@ const RolesPage = () => {
     try {
       const allPermissions = await getAllPermission(projectId);
       const projectInfo = await fetchProjectInfo(projectId);
+      console.log("project info is", projectInfo);
 
       if (allPermissions.error || projectInfo.error) {
         toast.error("Something went wrong");
@@ -66,7 +68,7 @@ const RolesPage = () => {
       }
 
       setPermissions(allPermissions.permissions);
-      setRoles(projectInfo.project.roles);
+      setRoles(projectInfo?.roles);
     } catch (error) {
       console.error("Error fetching permissions and roles:", error);
     }
@@ -80,6 +82,10 @@ const RolesPage = () => {
     }
     window.location.reload();
   };
+
+  useEffect(()=>{
+    console.log("roles are", roles);
+  },[roles]);
 
   useEffect(() => {
     getPermissionsAndRoles();
@@ -122,7 +128,7 @@ const RolesPage = () => {
               <li key={index} style={{ marginBottom: '5px' }}>
                 <input
                   type="checkbox"
-                  checked={role.permissions.includes(permission)}
+                  checked={role?.permissions?.includes(permission)}
                   onChange={() => handlePermissionChange(roleIndex, permission)}
                   style={{ marginRight: '5px' }}
                 />
@@ -134,7 +140,7 @@ const RolesPage = () => {
                 <input
                   type="checkbox"
                   disabled
-                  checked={role.permissions.includes(permission)}
+                  checked={role?.permissions?.includes(permission)}
                   style={{ marginRight: '5px' }}
                 />
                 {permission}

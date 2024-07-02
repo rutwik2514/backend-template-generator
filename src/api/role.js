@@ -3,7 +3,7 @@ import axiosInstance from "../Utils/Axios";
 const addNewRole = async (name, projectId, permissions) => {
     try {
         console.log("project id is", projectId);
-        const res = await axiosInstance.post("/role/new",{
+        const res = await axiosInstance.post(`/role/new/${projectId}`,{
             name: name,
             projectId: projectId,
             permissions: permissions

@@ -2,7 +2,7 @@ import axiosInstance from "../Utils/Axios";
 
 const fetchProjects = async() => {
     try {
-      const projects = await axiosInstance.get("/project/getProjects");
+      const projects = await axiosInstance.get("/project/getAll");
       console.log("response from fetch project is", projects);
       return {projects: projects?.data?.projects, error:null};
     } catch (error) {
@@ -14,7 +14,7 @@ const fetchProjects = async() => {
   const fetchProjectInfo = async(id) =>{
     try {
       const project = await axiosInstance.get(`/project/getProjectInfo/${id}`);
-      return {project: project?.data?.project, error:null};
+      return {project: project?.data?.project, error:null, roles: project?.data?.roles};
     } catch (error) {
       console.log(error);
       return {projects: "", error: error?.message}
