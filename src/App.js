@@ -6,7 +6,7 @@ import Login from "./Components/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import 'react-toastify/dist/ReactToastify.css';
-import Dashboard from './Components/Dashboard';
+import LandingPage from './Components/Dashboard/Index';
 import { AuthContext } from './context/Auth_Context';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,11 +14,9 @@ import { fetchUser } from './api/auth';
 import PermissionsPage from './Components/Permissions/PermissionsPage';
 import Navbar from './Components/Navbar/Navbar';
 import RolesPage from './Components/Roles/RolesPage';
-import Project from './Components/Project/Project';
-import Project_Dashboard from './Components/Project/Project_Dashboard';
+import ProjectDashboard from './Components/Project/Project_Dashboard';
 import Schema from './Components/Schema/Schema';
-import Schema_create from './Components/Schema/Schema_create';
-import Footer from './Components/Footer/Footer';
+import SchemaCreate from './Components/Schema/Schema_create';
 import Layout from './Components/Layout/Layout';
 
 function App() {
@@ -63,16 +61,16 @@ const AppRoutes = () => {
       <AuthContext.Provider value={{ userData, setUserData}} >
         <Routes>
           <Route exact path="/" element={<Layout><Homepage /></Layout>} />
-          <Route exact path="/dashboard" element={<Layout> <Dashboard /> </Layout>} />
+          <Route exact path="/dashboard" element={<Layout> <LandingPage /> </Layout>} />
           <Route exact path="/register" element={<Layout><Register /></Layout>} />
           <Route index exact path="/login" element={<Layout><Login /></Layout>} />
-          <Route index exact path="/project/:projectId" element={<Layout><Project_Dashboard   /></Layout>} />
+          <Route index exact path="/project/:projectId" element={<Layout><ProjectDashboard   /></Layout>} />
           <Route exact path="/navbar" element={<Layout><Navbar/></Layout>}/>
           <Route exact path='/project/:projectId/permissions' element={<Layout><PermissionsPage /></Layout>}/>
           <Route exact path='/project/:projectId/roles' element={<Layout><RolesPage /></Layout>}/>
           
           <Route exact path='/project/:projectId/schema' element={<Layout><Schema /></Layout>}/>
-          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><Schema_create /></Layout>}/>
+          <Route exact path='/project/:projectId/schema/create/:newSchemaName' element={<Layout><SchemaCreate /></Layout>}/>
 
 
         </Routes>
