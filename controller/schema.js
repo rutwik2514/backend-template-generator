@@ -47,8 +47,6 @@ const createSchema = async (req, res) => {
     } catch (error) {
         console.log("Error occured in create schema controller", error.message);
         return res.status(500).json({ message: "Something Went Wrong" });
-
-
     }
 
 }
@@ -124,7 +122,7 @@ const updateSchema = async (req, res) => {
 
 const getSchemas = async (req, res) => {
     try {
-        let {schemas} = req.body;
+        let { schemas } = req.body;
         console.log("schemas are", schemas);
         let allSchemas = [];
         await Promise.all(
@@ -144,11 +142,27 @@ const getSchemas = async (req, res) => {
 
 }
 
+const getAllSchemas = async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const schemas = await SchemaDefine.find({ projectId: projectId });
+        if(schemas) {
+            return res.status(200).json({message: "OK", schemas: schemas});
+        } else {
+            return res.status(500).json({message: "something went wrong!"});
+        }
+    } catch (error) {
+        console.log("can't fetch all schemas", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
 module.exports = {
     createSchema,
     updateSchema,
     deleteSchema,
-    getSchemas
+    getSchemas,
+    getAllSchemas
 };
 
 // const getAllSchemas = async (req, res) => {
