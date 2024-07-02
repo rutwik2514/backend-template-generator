@@ -11,7 +11,8 @@ connect(process.env.MONGO_URI);
 
 // Using middlewares
 app.use(express.json());
-app.use(cors({ origin:'http://localhost:3000', credentials: true }));
+app.use(cors({ origin:'*', credentials: true }));
+
 app.use("/api/v1", routes);
 
 
