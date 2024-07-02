@@ -79,6 +79,7 @@ function SchemaCreate() {
     const handleSubmit = async () => {
         // Process array field data
         // For demonstration, we are just logging the array fields
+        console.log("final fields are", field)
         const res = await addNewSchema(newSchemaName, projectId, field);
         console.log("rres is", res);
         if (res.error !== null) {

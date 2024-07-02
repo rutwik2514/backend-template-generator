@@ -8,19 +8,19 @@ function SchemaArrayModal({showArrayModal,setShowArrayModal,parentIndex,field,se
     const [newIndex,setNewIndex]=useState();
     // const [showArrayModal2,setShowArrayModal2]=useState(false);
     const addArrayField = () => {
-        setArrayFields([...arrayFields, { name: '', required: false, unique: false, type: '' }]);
+        setArrayFields([...arrayFields, { fieldName: '', isRequired: false, isUnique: false, dataType: '' }]);
     };
     const handleArrayFieldSubmit = () =>{
         console.log("fields are", arrayFields);
         const updatedFields = [...field];
-        updatedFields[parentIndex] = { ...updatedFields[parentIndex],"type": "Array", "content" : arrayFields };
+        updatedFields[parentIndex] = { ...updatedFields[parentIndex],"dataType": "Array", "content" : arrayFields };
         setField(updatedFields);
         // setField({ ...field, "type": "Array", "content" : arrayFields });
         setShowArrayModal(false);
         
     }
     const handleArrayFieldChange = (index, key, value) => {
-        if(key=="type" && value == "Array"){
+        if(key=="dataType" && value == "Array"){
             console.log("setting");
             setNewIndex(index)
             setNewArrayModal(true);
@@ -47,8 +47,8 @@ function SchemaArrayModal({showArrayModal,setShowArrayModal,parentIndex,field,se
                                             type="text"
                                             className="form-control"
                                             id={`fieldName${index}`}
-                                            value={arrayField.name}
-                                            onChange={(e) => handleArrayFieldChange(index, 'name', e.target.value)}
+                                            value={arrayField.fieldName}
+                                            onChange={(e) => handleArrayFieldChange(index, 'fieldName', e.target.value)}
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -56,9 +56,9 @@ function SchemaArrayModal({showArrayModal,setShowArrayModal,parentIndex,field,se
                                         <select
                                             className="form-select"
                                             id={`fieldName${index}`}
-                                            value={arrayField.type}
+                                            value={arrayField.dataType}
                 
-                                            onChange={(e) => handleArrayFieldChange(index, 'type', e.target.value)}
+                                            onChange={(e) => handleArrayFieldChange(index, 'dataType', e.target.value)}
                                         >
                                             <option value="">Select schema type</option>
                                             <option value="String">String</option>
