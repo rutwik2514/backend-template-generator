@@ -8,8 +8,10 @@ body {
  padding: 0;
  box-sizing: border-box;
  overflow-x: hidden;
- /* overflow-y: hidden; */
-
  font-family: "Poppins" !important;
+ overflow-y: scroll;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}

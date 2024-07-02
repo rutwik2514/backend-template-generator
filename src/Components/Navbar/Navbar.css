@@ -6,7 +6,7 @@
     background-color: #f5f3f0;
 }
 
-.navbar-wideScreen{
+.navbar-wideScreen {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -73,47 +73,52 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: #e4e3e2;;
+    background-color: #e4e3e2;
 }
 
 span {
     margin-left: 16px;
 }
 
-
-
-
-
-/* css by rutwik */
-
 .logo {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .nav-links {
+}
+
+.nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
     background: transparent;
-  
-  }
-  
+}
+
 .nav-links li {
-    margin: 0;
-    background: transparent;
-  
-  }
-  
-.nav-links a {
+    display: inline-block;
+    position: relative;
+    margin: 0 10px;
+}
+
+.nav-links li a {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    background: transparent;
-  }
-  .nav-links a:hover {
-    text-decoration: none;
-    color: #aba8a8;
-    font-size: 16px;
-    background: transparent;
-  }
+    color: black;
+}
+
+.nav-links li::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: width 0.3s;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+}
+
+.nav-links li:hover::after {
+    width: 100%;
+}
+
+img {
+    height: 100px;
+}
