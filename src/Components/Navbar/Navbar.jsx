@@ -16,6 +16,8 @@ function Navbar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const isWideScreen = windowWidth > 1000;
+  const navigate = useNavigate();
+
 
   const handleClickOutside = (event) => {
     //checks if click is not on sidebar
@@ -23,6 +25,11 @@ function Navbar() {
       setSidebar(false);
     }
   };
+
+  const handleLogout = () =>{
+    localStorage.removeItem("token");
+    navigate("/login")
+  }
 
   useEffect(() => {
     if (!isWideScreen) {
@@ -44,7 +51,6 @@ function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const navigate = useNavigate();
 
   return (
     <>
@@ -53,10 +59,8 @@ function Navbar() {
           <nav className="navbar-wideScreen">
             <div className="logo" onClick={()=>navigate(`/dashboard`)} style={{ marginLeft: "30px" }}> BackendBuddy</div>
             <ul className="nav-links" style={{ marginRight: "50px" }}>
-              <li><Link >Permissions</Link></li>
-              <li><Link >Roles</Link></li>
               <li><Link to="/project">Project</Link></li>
-              <li><Link >Logout</Link></li>
+              <li onClick={handleLogout}><Link >Logout</Link></li>
             </ul>
           </nav>
         </>
@@ -76,24 +80,12 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="list-items">
-                  <Link to='/permission'>
-                    <MdOutlineDashboard style={{ color: "black" }} />
-                    <span style={{ color: "black" }}>Permissions</span>
-                  </Link>
-                </li>
-                <li className="list-items">
-                  <Link to='/newproject'>
-                    <MdOutlineDashboard style={{ color: "black" }} />
-                    <span style={{ color: "black" }}>New Project</span>
-                  </Link>
-                </li>
-                <li className="list-items">
                   <Link to='#'>
                     <IoListSharp style={{ color: "black" }} />
                     <span style={{ color: "black" }}>Projects</span>
                   </Link>
                 </li>
-                <li className="list-items">
+                <li className="list-items" onClick={handleLogout}>
                   <Link to='#'>
                     <CiLogout style={{ color: "black" }} />
                     <span style={{ color: "black" }}>Log Out</span>

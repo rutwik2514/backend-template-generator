@@ -6,7 +6,7 @@ import ExpressImage from "../../Assets/express.png"
 import NodejsImage from "../../Assets/nodejs.png"
 function Tools() {
   return (
-    <div style={{ width: "100vw", display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: "10%", paddingRight: "10%", flexDirection: "column", marginBottom:"50px" }}>
+    <div style={{ width: "100vw", display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: "10%", paddingRight: "10%", flexDirection: "column",  marginTop:"50px", backgroundColor:"#fbf9f9", padding:"20px" }}>
     <h3>Tools used</h3>
     <div className='row' style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100vw" }}>
       <div className='col-md-2' style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>

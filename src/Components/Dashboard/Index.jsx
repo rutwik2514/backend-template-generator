@@ -22,17 +22,17 @@ const LandingPage = () => {
         <div className="background-container">
           <img src={Background} alt="Background" className="background-image" />
           <div className="overlay">
-            <h1 style={{ color: "black", fontWeight: "bold" }}>Your Text Here</h1>
+            <h1 style={{ color: "black", fontWeight: "bold" }}>Welcome to BackendBuddy</h1>
           </div>
         </div>
       </div>
-      <Divider />
+      {/* <Divider /> */}
       <About />
-      <Divider />
+      {/* <Divider /> */}
       <Features />
-      <Divider />
+      {/* <Divider /> */}
       <FlowChart />
-      <Divider />
+      {/* <Divider /> */}
       <Tools />
       <ToastContainer
         position="top-center"

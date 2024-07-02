@@ -2,8 +2,8 @@ import React from 'react'
 
 function Features() {
   return (
-    <div style={{ width: "100vw", display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: "10%", paddingRight: "10%", flexDirection: "column" }}>
-        <h3 style={{ fontWeight: "bold" }}>FEATURES</h3>
+    <div style={{ width: "100vw", display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: "10%", paddingRight: "10%", flexDirection: "column",  marginTop:"50px", backgroundColor:"#fbf9f9" }}>
+        <h3 style={{ fontWeight: "bold", marginTop:"20px" }}>FEATURES</h3>
         <div className='row' style={{ justifyContent: "space-around", display: "flex", alignItems: "center", width: "100vw", marginTop: "20px" }}>
           <div className='col-md-2' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "30vh", marginTop: "10px" }}>
             <div class="card" style={{ width: "18rem" }}>
