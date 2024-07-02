@@ -109,30 +109,48 @@ const getAllProjects = async (req, res) => {
 
 const getProjectInfo = async (req, res) => {
     try {
-        // const {projectId} = req.body;
         const projectId = req.params.projectId;
-        console.log("came in project info");
-        if (projectId == null || projectId == undefined || !projectId) {
-            return res.status(500).json({ message: "Need project Id" });
+        const token = req.headers['authorization'];
 
+        console.log("came in project info");
+        if (!projectId) {
+            return res.status(500).json({ message: "Need project Id" });
         }
+
         console.log("projectId is", projectId);
         const project = await Project.findById(projectId);
-        //removed .populate(roles) // populate using roles
-        if (project) {
-            return res.status(200).json({ message: "Ok", project: project });
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
         }
-        else {
-            return res.status(500).json({ message: "Something went wrong" });
 
+        console.log("project found:", project);
+        let rolesInfo;
+        try {
+            console.log("url for role service is", `${process.env.ROLE_SERVICE_URL}/getRoles`);
+            rolesInfo = await axios.post(`${process.env.ROLE_SERVICE_URL}/getRoles`, {
+                roles: project.roles
+            }, {
+                headers: {
+                    Authorization: token,
+                }
+            });
+        } catch (error) {
+            console.log("error in role service", error);
+            return res.status(500).json({ message: "Something went wrong in communicating with role_service", error });
         }
+
+        console.log("rolesInfo.data.roles:", rolesInfo.data.roles);
+
+        // Optionally save the updated project if you want to persist the changes
+        // await project.save();
+
+        return res.status(200).json({ message: "Ok", project:project, roles:rolesInfo.data.roles });
     } catch (error) {
-        console.log("error occured in getProjectInfo controller", error);
-        return res.status(500).json({ message: "Something went wrong" });
-
+        console.log("error occurred in getProjectInfo controller", error);
+        return res.status(500).json({ message: "Something went wrong", error });
     }
-
 }
+
 
 const addPermission = async (req, res) => {
     try {
@@ -264,7 +282,6 @@ const deleteRole = async (req, res) => {
             })
         );
         project.restrictedRoles = tempRestrictedRoles;
-
         let tempRoles = [];
         await Promise.all(
             project?.roles?.map(async (newRole) => {
