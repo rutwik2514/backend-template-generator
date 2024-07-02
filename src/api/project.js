@@ -14,7 +14,7 @@ const fetchProjects = async() => {
   const fetchProjectInfo = async(id) =>{
     try {
       const project = await axiosInstance.get(`/project/getProjectInfo/${id}`);
-      return {project: project?.data?.project, error:null};
+      return {project: project?.data?.project, error:null, roles: project?.data?.roles};
     } catch (error) {
       console.log(error);
       return {projects: "", error: error?.message}

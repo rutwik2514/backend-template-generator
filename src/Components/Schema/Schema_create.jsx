@@ -74,19 +74,11 @@ function SchemaCreate() {
             handleInputChange('type', value,index);
         }
     };
-    const handleArrayFieldSubmit = () => {
+    const handleSubmit = () => {
         // Process array field data
         // For demonstration, we are just logging the array fields
-        console.log(arrayFields);
+        console.log('field is ',field);
         setShowArrayModal(false);
-    };
-    const addArrayField = () => {
-        setArrayFields([...arrayFields, { name: '', required: false, unique: false, type: '' }]);
-    };
-    const handleArrayFieldChange = (index, key, value) => {
-        const newArrayFields = [...arrayFields];
-        newArrayFields[index][key] = value;
-        setArrayFields(newArrayFields);
     };
 
     //after modal saved
@@ -228,7 +220,7 @@ function SchemaCreate() {
                     </div>
                 </div>
             </div>
-            <button onClick={()=>console.log(field)}>Submit</button>
+            <button onClick={handleSubmit}>Submit</button>
           {showArrayModal && <SchemaArrayModal showArrayModal={showArrayModal} setShowArrayModal={setShowArrayModal} parentIndex={index} field={field} setField={setField} />}
             <ToastContainer
                 position="top-center"

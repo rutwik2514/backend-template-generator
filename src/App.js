@@ -18,6 +18,7 @@ import Project from './Components/Project/Project';
 import Project_Dashboard from './Components/Project/Project_Dashboard';
 import Schema from './Components/Schema/Schema';
 import Schema_create from './Components/Schema/Schema_create';
+import Footer from './Components/Footer/Footer';
 
 function App() {
   return (

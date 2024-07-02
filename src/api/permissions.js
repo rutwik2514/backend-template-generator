@@ -2,7 +2,7 @@ import axiosInstance from "../Utils/Axios";
 
 const addPermissions = async (projectId, permission) => {
     try {
-        const res = await axiosInstance.post("/project/addPermission", {
+        const res = await axiosInstance.post(`/project/addPermissions/${projectId}`, {
             projectId: projectId,
             permissions: permission
         });
@@ -14,7 +14,7 @@ const addPermissions = async (projectId, permission) => {
 
 const deletePermission = async (projectId, permission) => {
     try {
-        const res = await axiosInstance.delete("/project/deletePermission", {
+        const res = await axiosInstance.delete(`/project/deletePermission/${projectId}`, {
             data: {
                 projectId: projectId,
                 permission: permission
