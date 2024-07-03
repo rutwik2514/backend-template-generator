@@ -5,12 +5,58 @@ import { ToastContainer, toast } from 'react-toastify';
 import { fetchProjectInfo } from '../../api/project';
 import { addNewRole, deleteRole, updateRole } from '../../api/role';
 import Modal from 'react-modal';
-import roleImage from "../../Assets/jwt.png"
+import roleImage from "../../Assets/jwt.png";
 
 const imageStyle = {
-  width: 'auto',
+  width: '100px',
+  height: '100px',
   borderRadius: '4px',
   marginBottom: '10px',
+  objectFit: 'cover',
+};
+
+const cardStyle = {
+  marginBottom: '20px',
+  border: '1px solid #ccc',
+  padding: '10px',
+  borderRadius: '8px',
+  backgroundColor: '#f9f9f9',
+  alignItems: 'center',
+  gap: '10px',
+  width: '200px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  textAlign: 'center',
+};
+
+const roleNameStyle = {
+  marginBottom: '10px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  width: '100%',
+};
+
+const buttonStyle = {
+  backgroundColor: '#007bff',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  padding: '10px 20px',
+  cursor: 'pointer',
+  marginTop: '20px',
+  marginLeft: '10px',
+  width: '200px',
+};
+
+const inputStyle = {
+  padding: '10px',
+  marginTop: '20px',
+  marginRight: '10px',
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+  width: '200px',
 };
 
 const RolesPage = () => {
@@ -101,11 +147,8 @@ const RolesPage = () => {
     getPermissionsAndRoles();
   }, []);
 
-
-
   return (
     <div style={{ padding: '20px' }}>
-      <h2>RolesPage</h2>
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
@@ -115,17 +158,17 @@ const RolesPage = () => {
           placeholder="Role Name"
           onChange={(e) => setNewRoleName(e.target.value)}
           required
-          style={{ padding: '10px', marginRight: '10px' }}
+          style={inputStyle}
         />
-        <button onClick={handleAddRole} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Role</button>
+        <button onClick={handleAddRole} style={buttonStyle}>Add New Role</button>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {roles.map((role, roleIndex) => (
-          <div key={roleIndex} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', alignItems: 'center', gap: '10px', width: '175px', display: 'flex', flexDirection: 'column',justifyContent: 'center' }}>
+          <div key={roleIndex} style={cardStyle}>
             <img src={roleImage} alt="Role" style={imageStyle} />
             <div>
-              <h3 style={{ marginBottom: '10px' }}>
-                {role.name}
+              <h3 style={{ roleNameStyle, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {role.name.length > 10 ? `${role.name.substring(0, 10)}...` : role.name}
               </h3>
               <button onClick={() => handleSelectRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' }}>Edit</button>
               <button onClick={() => handleDeleteRole(roleIndex)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
