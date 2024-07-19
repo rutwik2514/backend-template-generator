@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/Auth_Context';
 import { addPermissions, deletePermission, getAllPermission } from '../../api/permissions';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -9,9 +8,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 const PermissionsPage = () => {
   const [selectedPermission, setSelectedPermission] = useState(null);
   const [newPermission, setNewPermission] = useState('');
-  const [editedPermission, setEditedPermission] = useState(''); 
+  const [editedPermission, setEditedPermission] = useState('');
   const [permissions, setPermissions] = useState([]);
   const { projectId } = useParams();
+  const navigate = useNavigate();
 
   const handleAddPermission = () => {
     if (newPermission !== '') {
@@ -35,7 +35,7 @@ const PermissionsPage = () => {
 
   const handleSelectPermission = (index, permission) => {
     setSelectedPermission(index);
-    setEditedPermission(permission); 
+    setEditedPermission(permission);
   };
 
   const handleDeletePermission = (index) => {
@@ -52,6 +52,8 @@ const PermissionsPage = () => {
       console.log(error);
     } else {
       console.log("Permissions added Successfully: ", data);
+      navigate(`/project/${projectId}/roles`)
+      toast.success("Permissions added Successfully");
     }
   };
 
@@ -92,8 +94,8 @@ const PermissionsPage = () => {
                   <div style={styles.editContainer}>
                     <input
                       type="text"
-                      value={editedPermission} 
-                      onChange={(e) => setEditedPermission(e.target.value)} 
+                      value={editedPermission}
+                      onChange={(e) => setEditedPermission(e.target.value)}
                       required
                       style={styles.input}
                     />

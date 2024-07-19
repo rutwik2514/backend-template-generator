@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getAllPermission } from '../../api/permissions';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchProjectInfo } from '../../api/project';
@@ -15,6 +15,7 @@ const RolesPage = () => {
   const [permissions, setPermissions] = useState([]);
   const [editRoleName, setEditRoleName] = useState('');
   const { projectId } = useParams();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddRole = async () => {
@@ -123,55 +124,38 @@ const RolesPage = () => {
               border: '1px solid #ccc'
             }}
           />
-          <button onClick={handleAddRole} style={{
+          <button id='addRole' onClick={handleAddRole} style={{
             padding: '10px 20px',
-            backgroundColor: '#28a745',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            marginRight: '5px'
+          }}>Add New Role</button>
+          <button id='addRole' onClick={() => navigate(`/project/${projectId}/schema`)} style={{
+            padding: '10px 20px',
+            backgroundColor: '#007bff',
             color: '#fff',
             border: 'none',
             borderRadius: '4px',
             cursor: 'pointer'
-          }}>Add New Role</button>
+          }}>Schemas</button>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', width: "40vw" }}>
-          <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-              <th>
-                RoleName
-              </th>
-              <th>
-
-              </th>
-              <th>
-
-              </th>
-            </thead>
-            <tbody>
-              {roles.map((role, roleIndex) => (
-                <tr>
-                  <td><p style={{ padding: "0" }}>
-                    {role.name.length > 20 ? `${role.name.substring(0, 10)}...` : role.name}
-                  </p></td>
-                  <td><button onClick={() => handleSelectRole(roleIndex)} style={{
-                    padding: '5px 10px',
-                    backgroundColor: '#ffc107',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                  }}><i className="fas fa-pencil-alt"></i></button></td>
-                  <td><button onClick={() => handleDeleteRole(roleIndex)} style={{
-                    padding: '5px 10px',
-                    backgroundColor: '#dc3545',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}><i className="fas fa-trash"></i></button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
+        <div className="rolesListContainer">
+          {roles.map((role, roleIndex) => (
+            <div className="roleItem" key={roleIndex}>
+              <p className="roleName">
+                {role.name.length > 20 ? `${role.name.substring(0, 10)}...` : role.name}
+              </p>
+              <button onClick={() => handleSelectRole(roleIndex)} className="editButton">
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+              <button onClick={() => handleDeleteRole(roleIndex)} className="deleteButton">
+                <i className="fas fa-trash"></i>
+              </button>
+            </div>
+          ))}
         </div>
         {isModalOpen && (
           <Modal

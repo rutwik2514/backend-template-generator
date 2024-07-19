@@ -6,6 +6,7 @@ import { addNewSchema } from '../../api/schema';
 
 function SchemaCreate() {
     const { projectId } = useParams();
+    const navigate = useNavigate();
     const [newSchemaName, setNewSchemaName] = useState();
     const [showModal, setShowModal] = useState(false);
     const [customType, setCustomType] = useState('');
@@ -85,6 +86,7 @@ function SchemaCreate() {
         }
         else {
             setShowArrayModal(false);
+            navigate(`/project/${projectId}`);
         }
     };
     const deleteField = (index) =>{
