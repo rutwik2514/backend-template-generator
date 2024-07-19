@@ -111,8 +111,6 @@ const getProjectInfo = async (req, res) => {
     try {
         const projectId = req.params.projectId;
         const token = req.headers['authorization'];
-
-        console.log("came in project info");
         if (!projectId) {
             return res.status(500).json({ message: "Need project Id" });
         }
@@ -126,7 +124,6 @@ const getProjectInfo = async (req, res) => {
         console.log("project found:", project);
         let rolesInfo;
         try {
-            console.log("url for role service is", `${process.env.ROLE_SERVICE_URL}/getRoles`);
             rolesInfo = await axios.post(`${process.env.ROLE_SERVICE_URL}/getRoles`, {
                 roles: project.roles
             }, {
@@ -138,13 +135,24 @@ const getProjectInfo = async (req, res) => {
             console.log("error in role service", error);
             return res.status(500).json({ message: "Something went wrong in communicating with role_service", error });
         }
+        let schemaInfo;
+        try {
+            schemaInfo = await axios.get(`${process.env.SCHEMA_SERVICE_URL}/getAllSchemas/${projectId}`, {
+                headers: {
+                    Authorization: token,
+                }
+            }); 
+        } catch (error) {
+            console.log("error in Schema service", error);
+            return res.status(500).json({ message: "Something went wrong in communicating with schema_service", error }); 
+        }
 
-        console.log("rolesInfo.data.roles:", rolesInfo.data.roles);
+        console.log("Schemainfo is", schemaInfo.data.schemas);
 
         // Optionally save the updated project if you want to persist the changes
         // await project.save();
 
-        return res.status(200).json({ message: "Ok", project:project, roles:rolesInfo.data.roles });
+        return res.status(200).json({ message: "Ok", project:project, roles:rolesInfo.data.roles,schemas:schemaInfo.data.schemas });
     } catch (error) {
         console.log("error occurred in getProjectInfo controller", error);
         return res.status(500).json({ message: "Something went wrong", error });
