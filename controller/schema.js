@@ -157,12 +157,28 @@ const getAllSchemas = async (req, res) => {
     }
 }
 
+const getSchemaInfo=async(req,res)=>{
+    try {
+        const {schemaId} =  req.params;
+        const schema = await SchemaDefine.findById(schemaId);
+        if(schema){
+            return res.status(200).json({message: "OK", schema: schema});
+        }else {
+            return res.status(500).json({message: "something went wrong!"});
+        }
+    } catch (error) {
+        console.log("can't fetch schema info", error);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
 module.exports = {
     createSchema,
     updateSchema,
     deleteSchema,
     getSchemas,
-    getAllSchemas
+    getAllSchemas,
+    getSchemaInfo
 };
 
 // const getAllSchemas = async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require("express");
 const { checkAuthorizationHeaders } = require("../middlewares/authenticate");
-const { createSchema, deleteSchema, updateSchema, getSchemas, getAllSchemas } = require("../controller/schema");
+const { createSchema, deleteSchema, updateSchema, getSchemas, getAllSchemas, getSchemaInfo } = require("../controller/schema");
 const router = express.Router();
 
 router.post("/new/:projectId", checkAuthorizationHeaders,createSchema);
@@ -8,5 +8,6 @@ router.delete("/delete/:projectId/:schemaId", checkAuthorizationHeaders,deleteSc
 router.patch("/update/:schemaId",checkAuthorizationHeaders,updateSchema);
 router.post("/getSchemas", checkAuthorizationHeaders,getSchemas);
 router.get("/getAllSchemas/:projectId", checkAuthorizationHeaders,getAllSchemas);
+router.get("/getSchema/:schemaId", checkAuthorizationHeaders,getSchemaInfo)
 
 module.exports =router;
