@@ -32,5 +32,14 @@ const fetchProjects = async() => {
     }
   }
 
+  const createGithubRepository = async(projectId) =>{
+    try {
+        const res = await axiosInstance.get(`/project/download/${projectId}`);
+        return {error:null}
+    } catch (error) {
+        return {error:"Something Went wrong"}
+    }
+  }
+
  
-  export {fetchProjects, fetchProjectInfo, addNewProject };
+  export {fetchProjects, fetchProjectInfo, addNewProject, createGithubRepository };

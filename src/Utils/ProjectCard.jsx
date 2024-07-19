@@ -97,16 +97,16 @@ function ProjectCard({ project, projectId }) {
     <div style={cardStyle} onClick={()=>{navigate(`/project/${projectId}`);}}>
       <img src={projectImage} alt="Project" style={imageStyle} />
       <h2 style={projectNameStyle}>{project.name}</h2>
-      <div ref={optionsRef} style={optionsContainerStyle}>
+      {/* <div ref={optionsRef} style={optionsContainerStyle}>
         <button style={optionButtonStyle} onClick={handleAddPermissions}>Add Permissions</button>
         <button style={optionButtonStyle} onClick={handleAddRoles}>Add Roles</button>
         <button style={optionButtonStyle} onClick={handleAddSchema}>Add Schema</button>
-      </div>
-      {!showOptions && (
+      </div> */}
+      {/* {!showOptions && (
         <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
           <FaEllipsisV onClick={handleToggleOptions} style={{ cursor: 'pointer' }} />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

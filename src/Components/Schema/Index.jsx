@@ -225,7 +225,15 @@ function SchemaCreate() {
                                         </select>
                                     </td>
                                     <td onClick={()=>{deleteField(index)}}>
-                                        delete
+                                    <button style={{
+                    padding: '5px 10px',
+                    backgroundColor: '#dc3545',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}>
+                    <i className="fas fa-trash"></i></button>
                                     </td>
                                     {showModal && (
                                         <div className="modal show d-block" tabIndex="-1">

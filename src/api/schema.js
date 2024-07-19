@@ -32,10 +32,23 @@ const updateSchema = async (schemaId,fields) =>{
             fields:fields
         });
         console.log("update response is", res);
+        return {error:null}
     } catch (error) {
         console.log(error);
+        return {error:"Something went wrong"}
+
         
     }
 }
 
-export {addNewSchema,fetchSchema,updateSchema};
+const deleteSchema = async(projectId,schemaId) =>{
+    try {
+        const res = await axiosInstance.delete(`/schema/delete/${projectId}/${schemaId}`) 
+        return {error:null}
+    } catch (error) {
+        console.log("error during deleting schema", error);
+        return {error:"Something went wrong"}  
+    }
+}
+
+export {addNewSchema,fetchSchema,updateSchema, deleteSchema};

@@ -88,12 +88,13 @@ function EditSchema() {
         // Process array field data
         // For demonstration, we are just logging the array fields
         const res = await updateSchema(schemaId, field);
-        // if (res.error !== null) {
-        //     toast.error('something went wrong, please try again');
-        // }
-        // else {
-        //     setShowArrayModal(false);
-        // }
+        if (res.error !== null) {
+            toast.error('something went wrong, please try again');
+            return;
+        }
+        else {
+            setShowArrayModal(false);
+        }
     };
 
     //after modal saved
@@ -252,7 +253,15 @@ function EditSchema() {
                                         </select>
                                     </td>
                                     <td onClick={()=>{deleteField(index)}}>
-                                        delete
+                                    <button style={{
+                    padding: '5px 10px',
+                    backgroundColor: '#dc3545',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}>
+                    <i className="fas fa-trash"></i></button>
                                     </td>
                                     {showModal && (
                                         <div className="modal show d-block" tabIndex="-1">
