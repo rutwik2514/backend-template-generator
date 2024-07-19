@@ -16,7 +16,7 @@ const schema = new mongoose.Schema({
         minlength: [6, "Length of password should be atleast 6 characters."]
     },
     projects:[{
-        type : mongoose.Types.ObjectId
+        type : mongoose.Types.ObjectId,
     }]
 })
 

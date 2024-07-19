@@ -63,7 +63,7 @@ const login = async (req, res) => {
         res.status(401).json({ message: "Must provide login credentials" });
         return;
     }
-
+    console.log("came in login");
     // checking if user exists
     const profile = await Profile.findOne({ email: email });
     if (!profile) {
