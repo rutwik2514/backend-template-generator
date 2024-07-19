@@ -94,7 +94,7 @@ function ProjectCard({ project, projectId }) {
   }, []);
 
   return (
-    <div style={cardStyle}>
+    <div style={cardStyle} onClick={()=>{navigate(`/project/${projectId}`);}}>
       <img src={projectImage} alt="Project" style={imageStyle} />
       <h2 style={projectNameStyle}>{project.name}</h2>
       <div ref={optionsRef} style={optionsContainerStyle}>

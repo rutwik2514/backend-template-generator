@@ -13,8 +13,29 @@ const addNewSchema = async (schemaName, projectId, fields) => {
     }
 }
 
-const fetchSchemas = async () => {
-    
+const fetchSchema = async (schemaId) => {
+    try {
+        const res = await axiosInstance.get(`/schema/getSchema/${schemaId}`)
+        console.log("response of sschema info is", res);
+        return {res: res?.data?.schema, error:null};
+
+    } catch (error) {
+        console.log(error);
+        return {res: "", error: error?.message}
+        
+    }
 }
 
-export {addNewSchema};
+const updateSchema = async (schemaId,fields) =>{
+    try {
+        const res = await axiosInstance.patch(`/schema/update/${schemaId}`,{
+            fields:fields
+        });
+        console.log("update response is", res);
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+export {addNewSchema,fetchSchema,updateSchema};

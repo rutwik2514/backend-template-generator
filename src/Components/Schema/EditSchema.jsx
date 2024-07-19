@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import SchemaArrayModal from './SchemaArrayModal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addNewSchema } from '../../api/schema';
+import { addNewSchema, fetchSchema, updateSchema } from '../../api/schema';
 
-function SchemaCreate() {
-    const { projectId } = useParams();
+function EditSchema() {
+    // const {schemaId} = useParams();
+    const { projectId, schemaId } = useParams();
     const [newSchemaName, setNewSchemaName] = useState();
     const [showModal, setShowModal] = useState(false);
     const [customType, setCustomType] = useState('');
@@ -22,6 +23,13 @@ function SchemaCreate() {
     const addField = () => {
         const newField = { fieldName: '', isRequired: false, isUnique: false, dataType: '', content: '' };
         setField([...field, newField]);
+    }
+
+    const deleteField = (index) =>{
+        setField([
+            ...field.slice(0, index),
+            ...field.slice(index + 1)
+          ]);
     }
 
     //checking if all brackets are matched
@@ -79,20 +87,14 @@ function SchemaCreate() {
     const handleSubmit = async () => {
         // Process array field data
         // For demonstration, we are just logging the array fields
-        const res = await addNewSchema(newSchemaName, projectId, field);
-        if (res.error !== null) {
-            toast.error('something went wrong, please try again');
-        }
-        else {
-            setShowArrayModal(false);
-        }
+        const res = await updateSchema(schemaId, field);
+        // if (res.error !== null) {
+        //     toast.error('something went wrong, please try again');
+        // }
+        // else {
+        //     setShowArrayModal(false);
+        // }
     };
-    const deleteField = (index) =>{
-        setField([
-            ...field.slice(0, index),
-            ...field.slice(index + 1)
-          ]);
-    }
 
     //after modal saved
     const handleCustomTypeSubmit = (e, index) => {
@@ -148,6 +150,29 @@ function SchemaCreate() {
         setError(bracketsMatch(newString));
     };
 
+    const getSchemaInfo = async() =>{
+        console.log("schema")
+        const schemaInfo = await fetchSchema(schemaId);
+        if(schemaInfo.error){
+            toast.error("Something went wrong, please try again");
+        }
+        else{
+            console.log(schemaInfo.res);
+            let fields = [];
+            for(let i = 0; i <schemaInfo.res.fields.length; i++){
+                    fields.push({
+                        fieldName:schemaInfo.res.fields[i].fieldName , isRequired: schemaInfo.res.fields[i].isRequired, isUnique: schemaInfo.res.fields[i].isUnique, dataType: schemaInfo.res.fields[i].dataType, content: ''
+                    })
+            }
+            setField(fields);
+            setNewSchemaName(schemaInfo.res.name)
+        }
+    }
+
+    useEffect(()=>{
+        getSchemaInfo();
+    },[])
+
     return (
         <section style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
             <div style={{ marginTop: "20px" }}>
@@ -156,6 +181,7 @@ function SchemaCreate() {
                     className="form-control"
                     placeholder="Schema Name"
                     value={newSchemaName}
+                    disabled
                     onChange={(e) => setNewSchemaName(e.target.value)}
                 />
             </div>
@@ -168,6 +194,7 @@ function SchemaCreate() {
                             <th>Is Unique?</th>
                             <th>Data Type</th>
                             <th>Delete</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -285,4 +312,4 @@ function SchemaCreate() {
     );
 }
 
-export default SchemaCreate;
+export default EditSchema;

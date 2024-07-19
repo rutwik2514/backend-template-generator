@@ -113,16 +113,12 @@ const RolesPage = () => {
 
   const getPermissionsAndRoles = async () => {
     try {
-      const allPermissions = await getAllPermission(projectId);
       const projectInfo = await fetchProjectInfo(projectId);
-      console.log("project info is", projectInfo);
-
-      if (allPermissions.error || projectInfo.error) {
+      if (projectInfo.error) {
         toast.error("Something went wrong");
         return;
       }
-
-      setPermissions(allPermissions.permissions);
+      setPermissions(projectInfo?.project?.permissions);
       setRoles(projectInfo?.roles);
     } catch (error) {
       console.error("Error fetching permissions and roles:", error);

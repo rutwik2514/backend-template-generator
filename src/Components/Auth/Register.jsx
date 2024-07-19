@@ -1,8 +1,8 @@
 import React from 'react'
-import Error from '../Utils/Error'
-import Validate from '../Validators/Validate'
+import Error from '../../Utils/Error'
+import Validate from '../../Validators/Validate'
 import { useNavigate } from 'react-router-dom'
-import { handleRegister } from '../api/auth'
+import { handleRegister } from '../../api/auth'
 function Register() {
     /***************State Declarations  *******************************/
     const [data, setData] = React.useState({

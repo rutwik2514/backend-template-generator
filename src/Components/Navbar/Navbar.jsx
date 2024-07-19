@@ -59,7 +59,7 @@ function Navbar() {
           <nav className="navbar-wideScreen">
             <div className="logo" onClick={()=>navigate(`/dashboard`)} style={{ marginLeft: "30px" }}> BackendBuddy</div>
             <ul className="nav-links" style={{ marginRight: "50px" }}>
-              <li><Link to="/project">Project</Link></li>
+              <li><Link to="/project">Projects</Link></li>
               <li onClick={handleLogout}><Link >Logout</Link></li>
             </ul>
           </nav>

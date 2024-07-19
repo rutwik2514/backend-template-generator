@@ -1,7 +1,7 @@
 import React from "react"
-import Error from '../Utils/Error'
-import Validate from '../Validators/Validate'
-import { handleLogin } from "../api/auth"
+import Error from '../../Utils/Error'
+import Validate from '../../Validators/Validate'
+import { handleLogin } from "../../api/auth"
 function Login() {
     /*************************  State Declarations  *************************/
     const [data, setData] = React.useState({
