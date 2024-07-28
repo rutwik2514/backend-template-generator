@@ -21,7 +21,7 @@ function ProjectCard({ project, projectId }) {
   };
 
   const imageStyle = {
-    width: '100%',
+    width: '90%',
     height: 'auto',
     borderRadius: '4px',
     marginBottom: '10px',

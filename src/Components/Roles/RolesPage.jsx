@@ -7,6 +7,7 @@ import { addNewRole, deleteRole, updateRole } from '../../api/role';
 import Modal from 'react-modal';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./RolePage.css"
+import Loader from '../../Utils/Loader/Loader';
 
 const RolesPage = () => {
   const [roles, setRoles] = useState([]);
@@ -14,6 +15,7 @@ const RolesPage = () => {
   const [newRoleName, setNewRoleName] = useState('');
   const [permissions, setPermissions] = useState([]);
   const [editRoleName, setEditRoleName] = useState('');
+  const [loader,setLoader]=useState(true);
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,6 +72,7 @@ const RolesPage = () => {
       }
       setPermissions(projectInfo?.project?.permissions);
       setRoles(projectInfo?.roles);
+      setLoader(false);
     } catch (error) {
       console.error("Error fetching permissions and roles:", error);
     }
@@ -94,8 +97,8 @@ const RolesPage = () => {
   }, []);
 
   return (
-
-    <div className='outerContainer'>
+    <>
+    {!loader && <div className='outerContainer'>
       <div className="container roleContainer">
         <h2 style={{
           textAlign: 'center',
@@ -218,7 +221,8 @@ const RolesPage = () => {
           pauseOnHover
         />
       </div>
-    </div>
+    </div>}{loader && <Loader />}
+    </>
   );
 };
 

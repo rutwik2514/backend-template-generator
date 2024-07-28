@@ -3,7 +3,8 @@
 .loaderSection{
     height: 100vh;
     text-align: center;
-    background-color: #242F3F;
+    /* backdrop-filter:; */
+    background-color: #164568;
     padding: 0 !important;
     margin: 0 !important;
 }

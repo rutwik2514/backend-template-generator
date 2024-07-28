@@ -4,6 +4,7 @@ import loginImg from "../../Assets/loginImage.json"
 import Validate from '../../Validators/Validate'
 import Lottie from "lottie-react";
 import { handleLogin } from "../../api/auth"
+import HelloImage from "../../Assets/hello.json"
 function Login() {
     /*************************  State Declarations  *************************/
     const [data, setData] = React.useState({
@@ -63,14 +64,14 @@ function Login() {
                     <div className="d-flex flex-column ">
                         <div className="text-center">
                             <img src="not found!" alt="" />
-                            {/* <Lottie animationData={loginImg} id="heelo" /> */}
+                            <Lottie animationData={HelloImage} style={{height:"30vh"}} />
                             <p className="text-glad">Glad to have you back</p>
                         </div>
                         <input
                             type="email"
                             className="mt-4 p-2 mb-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
-                            // onChange={(e) => setUserEmail(e.target.value)}
+                            onChange={(e) => { setData(prev => ({ ...prev, email: e?.target?.value })) }}
                             placeholder="Email"
                             required
                         />
@@ -78,7 +79,7 @@ function Login() {
                             type="Password"
                             className="my-2 p-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
-                            // onChange={(e) => setPassWord(e.target.value)}
+                            onChange={(e) => { setData(prev => ({ ...prev, password: e?.target?.value })) }}
                             placeholder="Password"
                             required
                         />
@@ -86,7 +87,7 @@ function Login() {
                             <button
                                 type="button"
                                 className="btn w-100 gradient-custom-2 mb-1"
-                                style={{ color: "white", height: "5vh" }}
+                                style={{ height: "5vh", border:"1px solid black" }}
                                 onClick={handleClick}
                             >
                                 Login
@@ -95,7 +96,7 @@ function Login() {
 
                         <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                             <p className="mx-1">Don't have an account?</p>
-                            <p className="signup-link" style={{ textDecoration: 'none', color: '#797CCE' }} onClick={() => window.location.href = "/register"}>Sign Up</p>
+                            <p className="signup-link" style={{ textDecoration: 'none', color: '#797CCE' }} onClick={() => window.location.href = "/register"}><button className="btn w-100 gradient-custom-2" >Sign Up</button></p>
                         </div>
                     </div>
                 </div>

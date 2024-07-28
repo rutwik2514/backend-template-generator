@@ -6,7 +6,7 @@ import { handleRegister } from '../../api/auth'
 import Lottie from "lottie-react";
 import RegisterImg from "../../Assets/registerImage.json"
 function Register() {
-    /***************State Declarations  *******************************/
+    /*State Declarations  *******************************/
     const [data, setData] = React.useState({
         email: "",
         userName: "",
@@ -20,7 +20,7 @@ function Register() {
     })
     const navigate = useNavigate();
 
-    /********************Functions ************************************/
+    /**Functions ************************************/
     const handleClose = () => {
         setError(prev => ({ ...prev, show: false, title: "", body: "" }));
     }
@@ -70,6 +70,7 @@ function Register() {
                             type="text"
                             className="mb-1 p-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
+                            onChange={(e) => { setData(prev => ({ ...prev, userName: e.target.value })) }}
                             required
                         />
                         <div className="my-1">Email:</div>
@@ -77,6 +78,7 @@ function Register() {
                             type="email"
                             className="mb-1 p-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
+                            onChange={(e) => { setData(prev => ({ ...prev, email: e.target.value })) }}
                             required
                         />
                         <div className="my-1">Password:</div>
@@ -84,6 +86,7 @@ function Register() {
                             type="Password"
                             className="mb-1 p-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
+                            onChange={(e) => { setData(prev => ({ ...prev, password: e.target.value })) }}
                             required
                         />
                         <div className="my-1">Confirm Password:</div>
@@ -91,6 +94,7 @@ function Register() {
                             type="Password"
                             className="mb-1 p-2"
                             style={{ height: "5vh", borderRadius: "6px" }}
+                            onChange={(e) => { setData(prev => ({ ...prev, confirmPassword: e.target.value })) }}
                             required
                         />
                         <div className="text-center pt-1 my-2 pb-1">
@@ -98,8 +102,8 @@ function Register() {
                                 type="button"
                                 className="btn w-100 gradient-custom-2"
                                 style={{
-                                    color: "white",
-                                    height: "5vh"
+                                    height: "5vh",
+                                    border:"1px solid black"
                                 }}
                                 onClick={handleClick}
                             >
@@ -109,7 +113,7 @@ function Register() {
 
                         <div className="d-flex flex-row align-items-center justify-content-center pb-4 my-3">
                             <p className="">Already have an account?</p>
-                            <p className="mx-2 login-link" style={{ textDecoration: 'none', color: '#797CCE' }} onClick={() => window.location.href = "/login"}>Login</p>
+                            <p className="mx-2 login-link" style={{ textDecoration: 'none', color: '#797CCE' }} onClick={() => window.location.href = "/login"}><button className='btn'>Login</button></p>
                         </div>
                     </div>
                 </div>

@@ -4,12 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Loader from '../../Utils/Loader/Loader';
 
 const PermissionsPage = () => {
   const [selectedPermission, setSelectedPermission] = useState(null);
   const [newPermission, setNewPermission] = useState('');
   const [editedPermission, setEditedPermission] = useState('');
   const [permissions, setPermissions] = useState([]);
+  const [loader, setLoader] = useState(true);
+
   const { projectId } = useParams();
   const navigate = useNavigate();
 
@@ -63,6 +66,7 @@ const PermissionsPage = () => {
       toast.error("Something went wrong");
     }
     setPermissions(allPermissions.permissions);
+    setLoader(false)
   };
 
   useEffect(() => {
@@ -70,7 +74,7 @@ const PermissionsPage = () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <>{!loader && <div style={styles.container}>
       <div style={styles.innerContainer}>
         <h2 style={styles.heading}>List Permissions</h2>
         <div style={styles.inputContainer}>
@@ -131,7 +135,7 @@ const PermissionsPage = () => {
         draggable
         pauseOnHover
       />
-    </div>
+    </div>}{loader && <Loader />}</>
   );
 };
 

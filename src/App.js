@@ -63,7 +63,7 @@ const AppRoutes = () => {
     <>
       <AuthContext.Provider value={{ userData, setUserData }} >
         <Routes>
-          <Route exact path="/" element={<Layout><Homepage /></Layout>} />
+          <Route exact path="/" element={<Layout><Login /></Layout>} />
           <Route exact path="/dashboard" element={<Layout> <LandingPage /> </Layout>} />
           <Route exact path="/register" element={<Register />} />
           <Route index exact path="/login" element={<Login />} />

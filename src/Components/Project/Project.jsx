@@ -4,6 +4,7 @@ import { addNewProject, fetchProjects } from '../../api/project';
 import { ToastContainer, toast } from 'react-toastify';
 import { AuthContext } from '../../context/Auth_Context';
 import ProjectCard from '../../Utils/ProjectCard';
+import Loader from '../../Utils/Loader/Loader';
 
 const projectListStyle = {
   display: 'flex',
@@ -39,11 +40,11 @@ function Project() {
   const { userData } = useContext(AuthContext);
   const [projectList, setProjectList] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
-
+  const [loader, setLoader] = useState(true);
   // Getting project list
   const getProjects = async () => {
     const projects = await fetchProjects();
-    if (projects.error == null) setProjectList(projects.projects)
+    if (projects.error == null) { setProjectList(projects.projects); setLoader(false) }
     else if (projects.error !== null) {
       toast.error(projects.error)
     };
@@ -70,24 +71,26 @@ function Project() {
 
   return (
     <>
-      <input placeholder='New project name' value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} style={inputStyle} />
-      <button onClick={handleNewProject} style={buttonStyle}>Create New Project</button>
-      <div style={projectListStyle}>
-        {projectList && projectList.map(project => (
-          <ProjectCard key={project._id} project={project} projectId={project._id} />
-        ))}
-      </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      {!loader && <div>
+        <input placeholder='New project name' value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} style={inputStyle} />
+        <button onClick={handleNewProject} style={buttonStyle}>Create New Project</button>
+        <div style={projectListStyle}>
+          {projectList && projectList.map(project => (
+            <ProjectCard key={project._id} project={project} projectId={project._id} />
+          ))}
+        </div>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </div>}{loader && <Loader />}
     </>
   )
 }
