@@ -93,7 +93,7 @@ function Dashboard() {
               {githubUrl && <>View Repository</>}
               {!githubUrl && <>Create Repository</>}
             </button></div>
-          {!schemas.length && <center><p>You have not added any schema yet</p></center>}
+          {!schemas.length && <center><p style={{marginTop:"10px"}}>You have not added any schemas yet</p></center>}
           {schemas.length>0 &&
             <div className="schema-list outer">
               {schemas.length &&
@@ -141,6 +141,7 @@ function Dashboard() {
           />
         </div>
       </div>}
+      {loader && <Loader />}
     </>
   );
 }

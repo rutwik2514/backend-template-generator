@@ -12,6 +12,7 @@ function EditSchema() {
     const [customType, setCustomType] = useState('');
     const [field, setField] = useState([{ fieldName: '', isRequired: false, isUnique: false, dataType: '', content: '' }]);
     const [showArrayModal, setShowArrayModal] = useState(false);
+    const [loader,setLoader]=useState(true);
     const [error, setError] = useState(false);
     //setting field values
     const handleInputChange = (key, value, index) => {
@@ -153,6 +154,7 @@ function EditSchema() {
 
     const getSchemaInfo = async() =>{
         console.log("schema")
+        
         const schemaInfo = await fetchSchema(schemaId);
         if(schemaInfo.error){
             toast.error("Something went wrong, please try again");
@@ -167,6 +169,7 @@ function EditSchema() {
             }
             setField(fields);
             setNewSchemaName(schemaInfo.res.name)
+            setLoader(false);
         }
     }
 
