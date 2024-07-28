@@ -72,6 +72,7 @@ function Dashboard() {
 
   return (
     <>
+      {loader && <Loader />}
       {!loader && <div className='outerContainer'>
         <div className="container projectContainer">
           <h2 style={{

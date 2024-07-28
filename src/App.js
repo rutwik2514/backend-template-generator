@@ -65,8 +65,8 @@ const AppRoutes = () => {
         <Routes>
           <Route exact path="/" element={<Layout><Homepage /></Layout>} />
           <Route exact path="/dashboard" element={<Layout> <LandingPage /> </Layout>} />
-          <Route exact path="/register" element={<Layout><Register /></Layout>} />
-          <Route index exact path="/login" element={<Layout><Login /></Layout>} />
+          <Route exact path="/register" element={<Register />} />
+          <Route index exact path="/login" element={<Login />} />
           <Route index exact path="/project" element={<Layout><Project /></Layout>} />
           <Route index exact path="/project/:projectId" element={<Layout><ProjectDashboard /></Layout>} />
           <Route exact path="/navbar" element={<Layout><Navbar /></Layout>} />
