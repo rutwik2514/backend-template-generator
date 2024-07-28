@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { handleRegister } from '../../api/auth'
 import Lottie from "lottie-react";
 import RegisterImg from "../../Assets/registerImage.json"
+import LoginNavbar from '../Navbar/LoginNavbar'
+import "./Auth.css"
 function Register() {
     /*State Declarations  *******************************/
     const [data, setData] = React.useState({
@@ -56,6 +58,7 @@ function Register() {
 
     return (
         <>
+        <LoginNavbar/>
             <div
                 className=" container-fluid gradient-form d-flex justify-content-center align-items-center"
                 style={{ overflow: "hidden", position: "relative", width: "100%", }}
@@ -119,10 +122,10 @@ function Register() {
                 </div>
 
                 <div
-                    className="col-6 gradient-custom-21 d-flex justify-content-center align-items-center"
+                    className="col-6 gradient-custom-21 d-flex justify-content-center align-items-center "
                     style={{ height: "100%", marginBottom: "20vh" }}
                 >
-                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+                    <div className="text-white px-3 py-4 p-md-5 mx-md-4 registerImage">
                         <Lottie animationData={RegisterImg} />
                     </div>
                 </div>

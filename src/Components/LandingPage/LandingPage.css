@@ -28,7 +28,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.5); /* Optional: Adds a semi-transparent overlay */
+  background: rgba(255, 255, 255, 0.5);
+  /* Optional: Adds a semi-transparent overlay */
 }
 
 .overlay h1 {
@@ -36,3 +37,13 @@
   font-size: 3rem;
   text-align: center;
 }
+
+@media screen and (max-width: 1000px) {
+  .flowchart-desktop {
+    display: none !important;
+  }
+  .flowchart-mobile{
+    display: block !important;
+  }
+}
+
