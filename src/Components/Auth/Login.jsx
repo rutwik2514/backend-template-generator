@@ -5,6 +5,8 @@ import Validate from '../../Validators/Validate'
 import Lottie from "lottie-react";
 import { handleLogin } from "../../api/auth"
 import HelloImage from "../../Assets/hello.json"
+import LoginNavbar from "../Navbar/LoginNavbar";
+
 function Login() {
     /*************************  State Declarations  *************************/
     const [data, setData] = React.useState({
@@ -47,22 +49,23 @@ function Login() {
 
     return (
         <>
+        <LoginNavbar/>
             <div
                 className=" container-fluid gradient-form d-flex justify-content-center align-items-center"
                 style={{ overflow: "hidden", position: "relative", width: "100%", padding: '0px !important' }}
                 id="login1"
             >
                 <div
-                    className="col-6 gradient-custom-2 d-flex justify-content-center align-items-center"
+                    className="col-md-6 gradient-custom-2 d-flex justify-content-center align-items-center"
                     style={{ height: "100%" }}
                 >
-                    <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+                    <div className="text-white px-3 py-4 p-md-5 mx-md-4 registerImage">
                         <Lottie animationData={loginImg} />
                     </div>
                 </div>
-                <div className="mb-5 col-6 d-flex justify-content-center align-items-center">
+                <div className="mb-5 col-md-6 d-flex justify-content-center align-items-center">
                     <div className="d-flex flex-column ">
-                        <div className="text-center">
+                        <div className="text-center registerImage">
                             <img src="not found!" alt="" />
                             <Lottie animationData={HelloImage} style={{height:"30vh"}} />
                             <p className="text-glad">Glad to have you back</p>
