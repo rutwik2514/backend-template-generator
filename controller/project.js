@@ -12,7 +12,7 @@ const path = require('path');
 const Queue = require("bull");
 const dotenv = require("dotenv");
 dotenv.config();
-const { burgerQueue } = require("../app")
+// const { burgerQueue } = require("../app")
 
 const newProject = async (req, res) => {
     try {
@@ -342,8 +342,6 @@ const addSchema = async (req, res) => {
         console.log("Error occured in add schema controller", error.message);
         return res.status(500).json({ message: "Something went wrong" });
     }
-
-
 }
 
 

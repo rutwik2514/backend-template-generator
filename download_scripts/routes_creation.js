@@ -3,7 +3,6 @@ const path = require('path');
 
 async function generateRoutes(schemas) {
   console.log('schema from routes is', schemas);
-
   // Define directory paths
   const parentDirectory = path.join(__dirname, '..');
   const downloadsDirectory = path.join(parentDirectory, 'Downloads');
@@ -23,9 +22,7 @@ async function generateRoutes(schemas) {
   } else {
     console.log(`Directory already exists: ${routesDirectory}`);
   }
-
   console.log(`Generated files will be stored in: ${routesDirectory}`);
-
   // Generate auth route string
   let authRouteString = `const express = require("express");
 const router = express.Router();\n
@@ -35,7 +32,7 @@ const { checkAuthorizationHeaders, authorizeUser } = require("../middlewares/aut
 
 
 router.post("/register", register);
-router.post("/login", checkAuthorizationHeaders, login);
+router.post("/login", login);
 `;
 
   // Loop through schemas and generate routes
