@@ -1,4 +1,4 @@
-# backend-template-generator
+BackendBuddy
 
 
 ## Links
